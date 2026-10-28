@@ -162,6 +162,13 @@ footer { border-top: 1px solid var(--rule); padding-block: 32px 56px; color: var
 .senbatsu i.c { background: var(--mark); width: 46px; font-weight: 500; }
 @media (max-width: 420px) { .senbatsu i { width: 28px; } .senbatsu .r1 i { width: 32px; } .senbatsu i.c { width: 38px; } }
 
+.tiles { width: 100%; height: auto; display: block; }
+.tiles .cells rect { fill: var(--paper); stroke: var(--rule); stroke-width: 1; }
+.tiles .cells rect.fixed { fill: var(--rule); }
+.tiles .loop { fill: none; stroke: var(--ink); stroke-width: 4; stroke-linejoin: round; }
+.tiles .miss { stroke: var(--node-end); stroke-width: 5; stroke-linecap: round; }
+.tiles .num text { font-family: var(--f-mono); font-size: 14px; fill: var(--muted); text-anchor: middle; }
+
 /* 游戏 */
 .bricks { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
 .bricks i { aspect-ratio: 2 / 1; border-radius: 3px; background: var(--rule); }
@@ -290,7 +297,6 @@ footer { border-top: 1px solid var(--rule); padding-block: 32px 56px; color: var
           <div class="row r2"><i></i><i></i><i></i><i></i><i></i></div>
           <div class="row r1"><i></i><i></i><i class="c">C</i><i></i><i></i><i></i></div>
         </div>
-        <div class="legend"><span>3 列</span><span>2 列</span><span>1 列 · 中间是 Center</span></div>
       </div>
     </section>
   </div>
@@ -346,14 +352,34 @@ footer { border-top: 1px solid var(--rule); padding-block: 32px 56px; color: var
     <div class="cat-head"><h2>游戏</h2><span class="en">Games</span></div>
     <section class="work" id="zhuanzhuan">
       <div>
-        <div class="kind">游戏</div>
+        <div class="kind">解谜游戏 · 游戏比赛作品</div>
         <h3>转砖数回</h3>
-        <p class="lede">自己做的小游戏。</p>
-        <p class="pending">玩法介绍和试玩链接会在这里补上。</p>
+        <p class="lede">把数回（Slitherlink）改成转砖块的玩法：每块砖上有几条边，点一下转 90°，让所有边对上，连成一个完整的圈就过关。</p>
+        <ul>
+          <li>两块砖之间的边都有才变成黑线，只有一块有就显示橙色，一眼看出哪里没对上</li>
+          <li>深色砖固定不能转，可以从它旁边开始推</li>
+          <li>3 个教学关带着上手，正式关卡从 4×4 到 8×8</li>
+          <li>卡住了可以点提示，会告诉你下一块砖该怎么放</li>
+          <li>前后改了六版，同时做了经典数回版本，提示系统按玩家实际盘面一步一步给</li>
+        </ul>
+        <div class="tags"><span>HTML</span><span>JavaScript</span><span>SVG</span><span>谜题设计</span></div>
       </div>
       <div class="sketch" aria-hidden="true">
-        <div class="cap">转砖数回</div>
-        <div class="bricks"><i></i><i class="on"></i><i></i><i></i><i class="hl"></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i class="hl"></i><i class="on"></i><i></i><i></i><i class="on"></i></div>
+        <div class="cap">转砖数回 · 黑线对上，橙色没对上</div>
+        <svg class="tiles" viewBox="0 0 250 190">
+          <g class="cells">
+            <rect x="5" y="5" width="60" height="60"/><rect x="65" y="5" width="60" height="60" class="fixed"/><rect x="125" y="5" width="60" height="60"/><rect x="185" y="5" width="60" height="60"/>
+            <rect x="5" y="65" width="60" height="60"/><rect x="65" y="65" width="60" height="60"/><rect x="125" y="65" width="60" height="60"/><rect x="185" y="65" width="60" height="60" class="fixed"/>
+            <rect x="5" y="125" width="60" height="60" class="fixed"/><rect x="65" y="125" width="60" height="60"/><rect x="125" y="125" width="60" height="60"/><rect x="185" y="125" width="60" height="60"/>
+          </g>
+          <path class="loop" d="M5 5 H185 V65 H245 V185 H125 V125 H65 V185 H5 Z"/>
+          <path class="miss" d="M125 125 V185"/>
+          <g class="num">
+            <text x="35" y="41">2</text><text x="95" y="41">1</text><text x="155" y="41">2</text><text x="215" y="41">1</text>
+            <text x="35" y="101">1</text><text x="95" y="101">0</text><text x="155" y="101">0</text><text x="215" y="101">2</text>
+            <text x="35" y="161">3</text><text x="95" y="161">2</text><text x="155" y="161">2</text><text x="215" y="161">2</text>
+          </g>
+        </svg>
       </div>
     </section>
   </div>
