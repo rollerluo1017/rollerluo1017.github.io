@@ -108,9 +108,7 @@ nav.cats a[aria-current="page"] span { color: var(--mark-ink); }
 .term .o { font-family: var(--f-body); font-size: 14px; margin: 4px 0 0; padding-left: 12px; border-left: 2px solid var(--rule); }
 
 /* 分支剧本 */
-.graph svg { width: 100%; height: auto; display: block; }
-.graph text { font-family: var(--f-body); font-size: 12px; }
-.graph .edge { stroke: var(--node-side); stroke-width: 1.5; fill: none; }
+.vis.wide img { width: 100%; height: auto; display: block; border-radius: 8px; border: 1px solid var(--rule); }
 
 /* 偶像截图 */
 .shots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
@@ -227,33 +225,15 @@ footer { border-top: 1px solid var(--rule); padding-block: 24px 48px; color: var
       <section class="pane" id="tools" aria-label="工具" hidden>
         <h2>工具</h2>
         <div class="items">
-          <article class="item">
+          <article class="item solo">
             <div>
               <div class="kind">网页工具</div>
               <h3>分支剧本编辑器</h3>
               <p>写分支游戏剧本的网页工具，在画布上连出主线、支线和多个结局。写完可以直接试玩，还能自动找出死路和走不到的结局。</p>
               <div class="links"><a href="https://github.com/rollerluo1017/branch-script-editor">查看和下载</a></div>
             </div>
-            <div class="vis graph" aria-hidden="true">
-              <svg viewBox="0 0 360 220">
-                <path class="edge" d="M84 40 C120 40,120 40,150 40"/>
-                <path class="edge" d="M84 40 C110 40,110 120,150 120"/>
-                <path class="edge" d="M222 40 C250 40,250 40,276 40"/>
-                <path class="edge" d="M222 40 C250 40,250 110,276 110"/>
-                <path class="edge" d="M222 120 C250 120,250 180,276 180"/>
-                <rect x="12" y="24" width="72" height="32" rx="6" fill="var(--node-main)"/>
-                <text x="48" y="44" text-anchor="middle" fill="#fff">序章</text>
-                <rect x="150" y="24" width="72" height="32" rx="6" fill="var(--node-main)"/>
-                <text x="186" y="44" text-anchor="middle" fill="#fff">进城</text>
-                <rect x="150" y="104" width="72" height="32" rx="6" fill="var(--node-side)"/>
-                <text x="186" y="124" text-anchor="middle" fill="#fff">留在村里</text>
-                <rect x="276" y="24" width="72" height="32" rx="6" fill="var(--node-end)"/>
-                <text x="312" y="44" text-anchor="middle" fill="#fff">结局 A</text>
-                <rect x="276" y="94" width="72" height="32" rx="6" fill="var(--node-end)"/>
-                <text x="312" y="114" text-anchor="middle" fill="#fff">结局 B</text>
-                <rect x="276" y="164" width="72" height="32" rx="6" fill="var(--node-end)"/>
-                <text x="312" y="184" text-anchor="middle" fill="#fff">结局 C</text>
-              </svg>
+            <div class="vis wide">
+              <img src="img/branch-editor.jpg" alt="分支剧本编辑器的画布：主线、支线、条件选项和多个结局连成的分支图" width="1280" height="510">
             </div>
           </article>
         </div>
