@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>转砖数回</title>
+<style>
+:root{
+  --bg:#f6f3ec;--card:#fffdf8;--ink:#2a2a33;--sub:#77736a;--dot:#3a3a44;
+  --o:#f08a24;--ok:#2f9e44;--btn:#ece7dc;
+  --face:#f6eedd;--edge:#d8c9aa;--num:#9a8b6e;--spin:#8f8470;
+  --lock:#8d6b4b;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  display:flex;flex-direction:column;align-items:center;user-select:none;-webkit-user-select:none;overscroll-behavior:none}
+.wrap{width:100%;max-width:560px;padding:10px 16px 20px;display:flex;flex-direction:column;gap:10px;min-height:100%}
+header{display:flex;align-items:center;gap:8px}
+header h1{font-size:16px;white-space:nowrap;margin:0;flex:1;letter-spacing:1px}
+.lvnav{display:flex;gap:6px;align-items:center}
+.lvbtn{height:34px;padding:0 12px;border-radius:10px;border:0;background:var(--ink);color:#fff;font-size:15px;font-weight:700}
+button.icon{width:34px;height:34px;border-radius:10px;border:0;background:var(--btn);font-size:17px;font-weight:700;color:var(--ink)}
+button:disabled{opacity:.35}
+b.o{color:var(--o)} b.b{color:var(--lock)}
+.tip{background:var(--card);border-radius:12px;padding:9px 12px;box-shadow:0 1px 3px #0001;min-height:44px}
+.tip .rule{font-size:15px;font-weight:700;letter-spacing:1px}
+.tip .sub{font-size:13px;line-height:1.6;color:var(--sub);margin-top:2px}
+.tip .sub:empty{display:none}
+.tip .t{display:inline-block;background:var(--ink);color:#fff;border-radius:6px;padding:0 6px;margin-right:6px;font-size:12px;font-weight:700}
+.boardbox{background:var(--card);border-radius:16px;box-shadow:0 1px 3px #0001;padding:6px;position:relative}
+svg{display:block;width:100%;height:auto;touch-action:none}
+/* 砖：能转的砖浅木色、带厚度，像按钮；固定砖深木色（胡桃木）、扁平 */
+.tile .edge{fill:var(--edge)}
+.tile .face{fill:var(--face);transition:fill .2s,transform .08s}
+.tile.press .face,.tile.press .num{transform:translateY(2px)}
+.tile.locked .face{fill:var(--lock)}
+.tile.locked .num{fill:#fff6e6}
+.tile.hint .face{fill:#ffe08a}
+.tile .rot{transition:transform .18s ease-out}
+/* 砖身上的短杠：对上了就藏起来（格线上画黑线），没对上才露出橙色；转动的时候整块砖的边都露出来 */
+.tile .bar{stroke:var(--o);stroke-width:7;stroke-linecap:round;opacity:0;transition:opacity .12s}
+.tile .bar.miss{opacity:1}
+.tile.spin .bar{opacity:1;stroke:var(--spin)}
+.tile.locked.spin .bar{stroke:#fff}
+.num{font-size:22px;font-weight:700;fill:var(--num);text-anchor:middle;dominant-baseline:central;pointer-events:none;transition:transform .08s}
+.blank{fill:none;stroke:#d0c6b2;stroke-width:1.5;stroke-dasharray:4 4}
+.line{stroke:var(--ink);stroke-width:8;stroke-linecap:round;pointer-events:none;transition:opacity .1s}
+.line.fade{opacity:0}
+svg.won .line{stroke:var(--ok)}
+svg.won .tile .face{fill:#e3f1e0}
+svg.won .tile.locked .face{fill:#5f9e74}
+.vbad{fill:none;stroke:var(--o);stroke-width:3.5;animation:flash .5s ease-in-out infinite alternate;pointer-events:none}
+@keyframes flash{from{opacity:.25}to{opacity:1}}
+.finger{font-size:26px;pointer-events:none;animation:poke 1s ease-in-out infinite}
+@keyframes poke{0%,100%{transform:translate(0,4px)}50%{transform:translate(0,-6px)}}
+.shake{animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.row{display:flex;gap:8px}
+.row button{flex:1;height:44px;border:0;border-radius:12px;background:var(--btn);color:var(--ink);font-size:15px;font-weight:700}
+.stats{display:flex;justify-content:space-between;color:var(--sub);font-size:12px;padding:0 4px}
+.status{font-size:14px;font-weight:600;text-align:center;min-height:20px;color:var(--sub)}
+.status.ok{color:var(--ok)}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:#2a2a33ee;color:#fff;padding:9px 16px;border-radius:20px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;width:max-content;max-width:90vw}
+.toast.show{opacity:1;transform:translateX(-50%)}
+.modal{position:fixed;inset:0;background:#0006;display:none;align-items:center;justify-content:center;z-index:20;padding:16px}
+.modal.show{display:flex}
+.modal .box{background:var(--card);border-radius:18px;padding:20px;max-width:420px;width:100%;line-height:1.6;font-size:15px;max-height:90vh;overflow:auto}
+.modal h2{margin:0 0 10px;font-size:20px}
+.modal button{width:100%;height:46px;border:0;border-radius:12px;font-size:16px;font-weight:700;background:var(--ink);color:#fff;margin-top:6px}
+.modal button.sec{background:var(--btn);color:var(--ink)}
+.ill{display:flex;align-items:center;gap:12px;margin:0 0 10px}
+.ill svg{flex:none}
+.ill .slot{width:96px;flex:none;display:flex;justify-content:center}
+.ill div{flex:1;font-size:14px}
+.picks{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:6px 0 10px}
+.picks button{height:44px;margin:0;background:var(--btn);color:var(--ink);font-size:15px}
+.picks button.cur{background:var(--ink);color:#fff}
+.picks button.done::after{content:"✓";font-size:11px;margin-left:2px;color:var(--ok)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>转砖数回</h1>
+    <div class="lvnav"><button class="icon" id="prevBtn">‹</button><button class="lvbtn" id="lvBtn">第1关</button><button class="icon" id="nextBtn2">›</button></div>
+    <button class="icon" id="helpBtn">?</button>
+  </header>
+  <div class="tip"><div class="rule">点砖转向 · 把边对上 · 连成一个圈</div><div class="sub" id="tip"></div></div>
+  <div class="boardbox" id="boardbox"><svg id="svg"></svg></div>
+  <div class="status" id="status"></div>
+  <div class="row">
+    <button id="undoBtn">↶ 撤销</button>
+    <button id="hintBtn">💡 提示</button>
+    <button id="resetBtn">⟲ 重来</button>
+  </div>
+  <div class="stats"><span id="stTime">用时 0:00</span><span id="stMove">转了 0 下</span><span id="stHint">提示 0 次</span></div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="modal" id="rules"><div class="box">
+  <h2>怎么玩</h2>
+  <div id="rulesBody"></div>
+  <button id="rulesClose">知道了</button>
+  <button class="sec" id="rulesTut">重玩教学关</button>
+</div></div>
+<div class="modal" id="blankCard"><div class="box">
+  <h2>空格</h2>
+  <div id="blankBody"></div>
+  <button id="blankClose">知道了</button>
+</div></div>
+<div class="modal" id="pick"><div class="box"><h2>选关</h2><div class="picks" id="pickList"></div><button class="sec" id="pickClose">关闭</button></div></div>
+<div class="modal" id="win"><div class="box">
+  <h2 style="text-align:center" id="winTitle">完成！</h2>
+  <p id="winText" style="text-align:center;margin:4px 0 12px"></p>
+  <button id="nextBtn">下一关</button>
+  <button class="sec" id="stayBtn">再看看</button>
+</div></div>
+<script>
+// ===================== 关卡 =====================
+// 前 3 关是教学关（tools2/build2.js 手工设计），后面 5 关和 demo 一样（tools/gen.js 从第六版关卡的答案切砖）。
+// tiles：开局朝向（[上,右,下,左] 有没有边），sol：答案朝向，locked：固定砖。每关都验证过只有一种转法能过关。
+const LEVELS=[{"W":2,"H":2,"tiles":["1001","1001","0011","0110"],"sol":["1001","1100","0011","0110"],"locked":[],"tut":1,"finger":"always","tip":"👆 点一下手指指着的砖，它会转 90°。","learned":"点一下砖就转 90°，所有边连成一个圈就过关。"},{"W":3,"H":2,"tiles":["1001","1001","0010","0011","0110","0001"],"sol":["1001","1100","0001","0011","0110","0001"],"locked":[],"tut":2,"finger":"idle","tip":"两块砖中间的边：两块都有才变成<b>黑线</b>；只有一块有，就是<b class=\"o\">橙色</b>（没对上）。","learned":"黑线 = 对上了，橙色 = 没对上。"},{"W":3,"H":3,"tiles":["0011","1010","0011","0101","1011","0101","1101","0101","1110"],"sol":["1001","1010","1100","0101","1101","0101","0111","0101","0111"],"locked":[1,3,5,7],"tut":3,"finger":"idle","tip":"<b class=\"b\">深色</b>的砖是固定的，不能转。先看它们旁边的砖该怎么放。","learned":"深色的砖是固定的，可以从它们旁边开始想。"},{"W":4,"H":4,"tiles":["1011","0110","1001","","1100","0100","0110","0011","0010","0010","0001","1001","0100","0111","0111","0111"],"locked":[4,0,12,13,7,15],"sol":["1011","1100","0011","","1100","0001","1100","0011","0100","0001","0010","1100","0100","0111","1101","0111"],"src":2,"nsol":1},{"W":5,"H":5,"tiles":["0001","0010","0110","0110","0110","0111","0010","0001","","1000","1100","0010","","","1001","1000","1001","","1000","0110","","0110","0110","0011","0001"],"locked":[2,1,10,24],"sol":["0010","0010","0110","1001","1100","1011","1000","1000","","0100","1100","0001","","","0110","0100","0011","","0100","1001","","1100","0011","0110","0001"],"src":7,"nsol":1},{"W":6,"H":6,"tiles":["","","0100","0010","1000","0001","","1000","1001","0100","0100","0011","","1100","0100","","","0010","0001","1100","","","","1000","0010","0100","","","","1001","1000","0011","0100","0100","0011","1100"],"locked":[3,8,31],"sol":["","","0010","0010","0010","0010","","0100","1001","1000","1000","1100","","0110","0001","","","0100","0100","1001","","","","0100","0100","0001","","","","0110","0100","0011","0010","0010","0110","1001"],"src":11,"nsol":1},{"W":6,"H":6,"tiles":["","0001","","1001","0100","0011","1000","1101","0001","","","1000","","","0110","0100","","0010","","","1000","","0100","0010","","","","1000","0011","1001","","","","","0001","0100"],"locked":[28,20,3],"sol":["","0010","","1001","1000","1100","0100","1011","1000","","","0100","","","0011","0010","","0100","","","1000","","0001","0100","","","","0100","0011","0110","","","","","1000","1000"],"src":17,"nsol":1},{"W":8,"H":8,"tiles":["","","","0100","","","","","","","","1011","1001","0100","","","","0010","1001","","0001","","1000","","","1001","0100","","","1000","","0010","0100","1101","0100","","","","0100","0011","","1010","1011","0010","","","","0100","0010","","1010","","","","","1000","0001","1110","0111","1001","1000","0100","0001","1001"],"locked":[31,47,32,18],"sol":["","","","0010","","","","","","","","1101","0011","0010","","","","0100","1001","","1000","","0001","","","0110","0001","","","0100","","0010","0100","1011","0010","","","","1000","1100","","1010","1110","0001","","","","0100","0100","","1010","","","","","0100","0100","0111","1101","0011","0010","0010","0010","0110"],"src":21,"nsol":1}];
+const NT=LEVELS.filter(l=>l.tut).length;
+const TIPS=[
+  '深色的砖不能转，先从它们旁边转起。',
+  '靠边和角落的砖能转的方向少，先定它们。',
+  '两条边的砖有两种：拐角能转出 4 个方向，直线只有横竖 2 种。',
+  '这关有的空格四周也有线，要看旁边的砖怎么放。',
+  '8×8，深色砖很少了。卡住了可以点提示。'
+];
+const lvName=i=>i<NT?`教学 ${i+1}`:`第${i-NT+1}关`;
+
+// ===================== 状态 =====================
+const S=60,PAD=14,NS='http://www.w3.org/2000/svg';
+const $=id=>document.getElementById(id);const svg=$('svg');
+const mk=(t,a,p)=>{const el=document.createElementNS(NS,t);for(const k in a)el.setAttribute(k,a[k]);(p||svg).appendChild(el);return el;};
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const rotM=(m,k)=>{m=m.slice();for(let i=0;i<k;i++)m=[m[3],m[0],m[1],m[2]];return m;};   // 顺时针转 k 下
+const parse=s=>s?s.split('').map(Number):null;
+let lv,L,W,H,base,rot,hist,stats,won,timer,G,lineEls={},vbadEls=[],finger=null,settleT,lastAct;
+
+function loadLevel(i){lv=i;store.set('tile2.cur',i);L=LEVELS[i];W=L.W;H=L.H;
+  base=L.tiles.map(parse);rot=base.map(()=>0);hist=[];won=false;clearTimeout(settleT);
+  stats={t0:Date.now(),moves:0,hint:0};lastAct=Date.now();
+  build();render();$('tip').innerHTML=L.tut?L.tip:(TIPS[i-NT]||'');renderPick();
+  clearInterval(timer);timer=setInterval(tick,1000);tick();
+  // 第一次碰到有空格的关，弹一张图卡讲空格
+  if(!L.tut&&base.some(t=>!t)&&!store.get('tile2.blank'))setTimeout(()=>$('blankCard').classList.add('show'),300);}
+const cur=c=>base[c]&&rotM(base[c],rot[c]%4);
+const locked=c=>L.locked.includes(c);
+const keysOf=c=>{const x=c%W,y=(c/W)|0;return[`${x},${y},${x+1},${y}`,`${x+1},${y},${x+1},${y+1}`,`${x},${y+1},${x+1},${y+1}`,`${x},${y},${x},${y+1}`];};
+
+// ===================== 画盘面 =====================
+const BAR=(x,y,k)=>{const a=9,b=S-9,s=[[a,a,b,a],[b,a,b,b],[a,b,b,b],[a,a,a,b]][k];return{x1:x*S+s[0],y1:y*S+s[1],x2:x*S+s[2],y2:y*S+s[3]};};
+function build(){svg.classList.remove('won');svg.innerHTML='';lineEls={};finger=null;
+  svg.setAttribute('viewBox',`${-PAD} ${-PAD} ${W*S+PAD*2} ${H*S+PAD*2}`);
+  G=[];
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){const c=y*W+x;
+    if(!base[c]){mk('rect',{class:'blank',x:x*S+6,y:y*S+6,width:S-12,height:S-12,rx:8});G.push(null);continue;}
+    const cx=x*S+S/2,cy=y*S+S/2,lk=locked(c);
+    const g=mk('g',{class:'tile'+(lk?' locked':''),'data-c':c});
+    // 能转的砖：下面一层深色当厚度；固定砖扁平
+    if(!lk)mk('rect',{class:'edge',x:x*S+3,y:y*S+5,width:S-6,height:S-7,rx:9},g);
+    mk('rect',{class:'face',x:x*S+3,y:y*S+(lk?3:2),width:S-6,height:lk?S-6:S-7,rx:9},g);
+    const r=mk('g',{class:'rot'},g);r.style.transformOrigin=`${cx}px ${cy}px`;
+    const bars=base[c].map((v,k)=>v?mk('line',Object.assign({class:'bar'},BAR(x,y,k)),r):null);
+    mk('text',{class:'num',x:cx,y:cy},g).textContent=base[c].reduce((p,q)=>p+q,0);
+    G.push({g,r,bars,turn:0});}
+  for(let y=0;y<=H;y++)for(let x=0;x<=W;x++)mk('circle',{cx:x*S,cy:y*S,r:4.2,fill:'var(--dot)','pointer-events':'none'});
+}
+// 一条格边：两侧的砖都说有 → 线；有一侧说有、另一侧砖说没有 → 没对上；空格和盘外不表态
+function edgeState(){
+  const out=[];
+  const tv=(x,y,k)=>{if(x<0||y<0||x>=W||y>=H)return null;const t=cur(y*W+x);return t?t[k]:null;};
+  const push=(x1,y1,x2,y2,a,b)=>{const v=[a,b].filter(q=>q!==null);if(!v.length)return;
+    const line=v.every(q=>q===1),miss=v.includes(1)&&v.includes(0);out.push({x1,y1,x2,y2,line,miss,key:`${x1},${y1},${x2},${y2}`});};
+  for(let y=0;y<=H;y++)for(let x=0;x<W;x++)push(x,y,x+1,y,tv(x,y-1,2),tv(x,y,0));
+  for(let y=0;y<H;y++)for(let x=0;x<=W;x++)push(x,y,x,y+1,tv(x-1,y,1),tv(x,y,3));
+  return out;}
+function analyze(){const es=edgeState();const lines=es.filter(e=>e.line),miss=es.filter(e=>e.miss);
+  const deg={},p={};const f=a=>p[a]===undefined||p[a]===a?(p[a]=a):(p[a]=f(p[a]));
+  for(const e of lines){const a=e.x1+','+e.y1,b=e.x2+','+e.y2;deg[a]=(deg[a]||0)+1;deg[b]=(deg[b]||0)+1;p[f(a)]=f(b);}
+  const badV=Object.keys(deg).filter(v=>deg[v]!==2);const roots=new Set(Object.keys(deg).map(f));
+  return{lines,miss,badV,loops:roots.size,done:!miss.length&&!badV.length&&roots.size===1&&lines.length>0};}
+
+function render(){const A=analyze();
+  const missSet=new Set(A.miss.map(e=>e.key));
+  G.forEach((t,c)=>{if(!t)return;const keys=keysOf(c);
+    t.r.style.transform=`rotate(${t.turn*90}deg)`;
+    // bars 按原始朝向建的，转了 k 下以后原来的第 j 条边在 (j+k)%4 的位置；没对上的才露出来（橙色）
+    t.bars.forEach((b,j)=>{if(!b)return;b.classList.toggle('miss',missSet.has(keys[(j+rot[c])%4]));});});
+  // 对上的边：格线上一条黑线
+  const want=new Set(A.lines.map(e=>e.key));
+  for(const k in lineEls)if(!want.has(k)){lineEls[k].remove();delete lineEls[k];}else lineEls[k].classList.remove('fade');
+  for(const e of A.lines)if(!lineEls[e.key])lineEls[e.key]=mk('line',{class:'line',x1:e.x1*S,y1:e.y1*S,x2:e.x2*S,y2:e.y2*S});
+  vbadEls.forEach(e=>e.remove());vbadEls=[];
+  const st=$('status');st.className='status';
+  if(A.done){st.className='status ok';st.textContent='连成一个圈了！';}
+  else if(A.miss.length){st.innerHTML=`还有 ${A.miss.length} 处<b class="o">没对上</b>`;}
+  else{// 边都对上了，但有断头或分成了好几个圈
+    A.badV.forEach(v=>{const[x,y]=v.split(',').map(Number);vbadEls.push(mk('circle',{class:'vbad',cx:x*S,cy:y*S,r:12}));});
+    st.innerHTML=A.badV.length?'边都对上了，但<b class="o">橙圈</b>处的线断开了':`边都对上了，但现在是 ${A.loops} 个圈，要连成一个`;}
+  $('undoBtn').disabled=!hist.length||won;
+  placeFinger();
+  return A;}
+
+// ===================== 教学关的手指 =====================
+// 指向一块朝向不对的砖（和提示挑同一块）；教学 1 一直指，教学 2、3 停手 5 秒才出来
+function wrongTiles(){const sol=L.sol.map(parse);const wrong=[];
+  G.forEach((t,c)=>{if(t&&!locked(c)&&cur(c).join('')!==sol[c].join(''))wrong.push(c);});
+  const okN=c=>{const x=c%W,y=(c/W)|0;let n=0;for(const[dx,dy]of[[1,0],[-1,0],[0,1],[0,-1]]){const X=x+dx,Y=y+dy;if(X<0||Y<0||X>=W||Y>=H){n++;continue;}const d=Y*W+X;if(!base[d]||cur(d).join('')===sol[d].join(''))n++;}return n;};
+  return wrong.sort((a,b)=>okN(b)-okN(a));}
+function placeFinger(){
+  const show=L&&L.tut&&!won&&(L.finger==='always'||Date.now()-lastAct>5000);
+  const c=show?wrongTiles()[0]:undefined;
+  if(c===undefined){if(finger){finger.remove();finger=null;}return;}
+  const x=c%W,y=(c/W)|0;
+  if(!finger){finger=mk('text',{class:'finger','text-anchor':'middle'});finger.textContent='👆';}
+  else svg.appendChild(finger);
+  finger.setAttribute('x',x*S+S/2+5);finger.setAttribute('y',y*S+S/2+31);}
+
+// ===================== 操作 =====================
+// 转一下：先让整块砖的边露出来跟着转，旁边的黑线淡出；转完再判定对没对上
+function spin(c,d){rot[c]=(rot[c]+d+4)%4;G[c].turn+=d;const t=G[c];
+  t.r.style.transform=`rotate(${t.turn*90}deg)`;t.g.classList.add('spin','press');
+  keysOf(c).forEach(k=>lineEls[k]&&lineEls[k].classList.add('fade'));
+  setTimeout(()=>t.g.classList.remove('press'),110);
+  clearTimeout(settleT);settleT=setTimeout(settle,190);}
+function settle(){G.forEach(t=>t&&t.g.classList.remove('spin'));const A=render();if(A.done&&!won)win();}
+function turn(c){if(won||!base[c])return;
+  if(locked(c)){const g=G[c].g;g.classList.remove('shake');void g.getBoundingClientRect();g.classList.add('shake');toast('深色的砖是固定的，不能转');return;}
+  hist.push(c);stats.moves++;lastAct=Date.now();tick();
+  G.forEach(t=>t&&t.g.classList.remove('hint'));
+  spin(c,1);}
+function undo(){if(!hist.length||won)return;const c=hist.pop();lastAct=Date.now();spin(c,-1);}
+// 提示：找一块朝向不对的砖，亮一下，再把它转到对的朝向
+function hint(){if(won)return;const w=wrongTiles();if(!w.length)return;const c=w[0];const sol=parse(L.sol[c]);
+  stats.hint++;lastAct=Date.now();G[c].g.classList.add('hint');
+  let k=0;while(rotM(base[c],(rot[c]+k)%4).join('')!==sol.join('')&&k<4)k++;
+  const step=()=>{if(won||k<=0)return;k--;hist.push(c);stats.moves++;tick();spin(c,1);if(k>0)setTimeout(step,260);};
+  setTimeout(step,350);toast('这块砖应该这样放');}
+function win(){won=true;clearInterval(timer);svg.classList.add('won');render();
+  const sec=Math.round((Date.now()-stats.t0)/1000);
+  const done=store.get('tile2.done')||[];if(!done.includes(lv)){done.push(lv);store.set('tile2.done',done);}renderPick();
+  if(L.tut){$('winTitle').textContent=`学会了 ✓`;$('winText').innerHTML=L.learned;
+    $('nextBtn').textContent=lv<NT-1?'下一个教学':'开始第 1 关';}
+  else{$('winTitle').textContent=`${lvName(lv)} 通关！`;
+    $('winText').innerHTML=`用时 ${fmt(sec)} · 转了 ${stats.moves} 下 · 提示 ${stats.hint} 次`;
+    $('nextBtn').textContent=lv<LEVELS.length-1?'下一关':'回到第1关';}
+  setTimeout(()=>{if(won)$('win').classList.add('show')},900);}
+function fmt(s){return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+function tick(){$('stTime').textContent='用时 '+fmt(Math.round((Date.now()-stats.t0)/1000));
+  $('stMove').textContent=`转了 ${stats.moves} 下`;$('stHint').textContent=`提示 ${stats.hint} 次`;
+  if(L.tut&&!finger&&L.finger==='idle')placeFinger();}
+function renderPick(){const done=store.get('tile2.done')||[];$('lvBtn').textContent=`${lvName(lv)} ▾`;
+  $('prevBtn').disabled=lv===0;$('nextBtn2').disabled=lv===LEVELS.length-1;
+  $('pickList').innerHTML=LEVELS.map((l,i)=>`<button class="${i===lv?'cur':''} ${done.includes(i)?'done':''}" data-i="${i}">${i<NT?'教'+(i+1):i-NT+1}</button>`).join('');}
+let toastT;function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),1800);}
+
+// ===================== 规则图解 =====================
+// 小图：两格宽。cells：'t' 能转的砖 / 'l' 固定砖 / 'e' 空格；line：格线上的黑线；bars：[格子, 方向] 橙色短杠
+function mini(cells,opt){opt=opt||{};const n=cells.length,p=8;
+  let s=`<svg viewBox="${-p} ${-p} ${n*S+p*2} ${S+p*2}" style="width:${n*48}px">`;
+  cells.forEach((k,x)=>{
+    if(k==='e')s+=`<rect class="blank" x="${x*S+6}" y="6" width="${S-12}" height="${S-12}" rx="8"/>`;
+    else{s+=`<g class="tile${k==='l'?' locked':''}">`+(k==='l'?'':`<rect class="edge" x="${x*S+3}" y="5" width="${S-6}" height="${S-7}" rx="9"/>`)+
+      `<rect class="face" x="${x*S+3}" y="${k==='l'?3:2}" width="${S-6}" height="${k==='l'?S-6:S-7}" rx="9"/>`;
+      (opt.bars||[]).filter(b=>b[0]===x).forEach(b=>{const q=BAR(x,0,b[1]);s+=`<line class="bar miss" x1="${q.x1}" y1="${q.y1}" x2="${q.x2}" y2="${q.y2}"/>`;});
+      if(opt.arrow===x)s+=`<text class="num" x="${x*S+S/2}" y="${S/2}" style="font-size:28px">↻</text>`;
+      s+='</g>';}});
+  (opt.line||[]).forEach(l=>s+=`<line class="line" x1="${l[0]*S}" y1="${l[1]*S}" x2="${l[2]*S}" y2="${l[3]*S}"/>`);
+  for(let x=0;x<=n;x++)for(let y=0;y<=1;y++)s+=`<circle cx="${x*S}" cy="${y*S}" r="4.2" fill="var(--dot)"/>`;
+  return s+'</svg>';}
+const ill=(svgs,txt)=>`<div class="ill"><span class="slot">${svgs}</span><div>${txt}</div></div>`;
+$('rulesBody').innerHTML=
+  ill(mini(['t'],{arrow:0}),'<b>点一下砖，它转 90°。</b>砖上的数字 = 它有几条边。')+
+  ill(mini(['t','t'],{line:[[1,0,1,1]]}),'两块砖中间的边，<b>两块都有</b>：变成<b>黑线</b>，对上了。')+
+  ill(mini(['t','t'],{bars:[[0,1]]}),'<b>只有一块有</b>：露出<b class="o">橙色</b>，没对上。')+
+  ill(mini(['l','t']),'<b class="b">深色</b>的砖是固定的，不能转。')+
+  ill(mini(['t','e'],{line:[[1,0,1,1]]}),'空格和盘边没有砖，边朝着它们<b>直接算对上</b>。')+
+  '<p style="margin:4px 0 8px">所有边都对上，并且连成<b>一个</b>圈，就过关。</p>';
+$('blankBody').innerHTML=
+  ill(mini(['t','e'],{line:[[1,0,1,1]]}),'虚线框是<b>空格</b>，里面没有砖。')+
+  '<p style="margin:0 0 8px">空格那一侧没人反对，所以旁边的砖把边朝向空格（或者朝向盘边）时，<b>直接算对上</b>，变成黑线。</p>';
+
+svg.addEventListener('pointerdown',ev=>{ev.preventDefault();const g=ev.target.closest('.tile');if(g)turn(+g.dataset.c);});
+svg.addEventListener('contextmenu',ev=>ev.preventDefault());
+$('undoBtn').onclick=undo;$('hintBtn').onclick=hint;
+$('resetBtn').onclick=()=>{if(confirm('把这一关的砖恢复到开局？'))loadLevel(lv);};
+$('lvBtn').onclick=()=>$('pick').classList.add('show');$('pickClose').onclick=()=>$('pick').classList.remove('show');
+$('pickList').onclick=ev=>{const b=ev.target.closest('button');if(b){$('pick').classList.remove('show');loadLevel(+b.dataset.i);}};
+$('prevBtn').onclick=()=>lv>0&&loadLevel(lv-1);$('nextBtn2').onclick=()=>lv<LEVELS.length-1&&loadLevel(lv+1);
+$('helpBtn').onclick=()=>$('rules').classList.add('show');
+$('rulesClose').onclick=()=>$('rules').classList.remove('show');
+$('rulesTut').onclick=()=>{$('rules').classList.remove('show');loadLevel(0);};
+$('blankClose').onclick=()=>{$('blankCard').classList.remove('show');store.set('tile2.blank',1);};
+$('nextBtn').onclick=()=>{$('win').classList.remove('show');loadLevel((lv+1)%LEVELS.length);};
+$('stayBtn').onclick=()=>$('win').classList.remove('show');
+document.addEventListener('keydown',ev=>{if((ev.ctrlKey||ev.metaKey)&&ev.key==='z'){ev.preventDefault();undo();}});
+
+loadLevel(Math.min(store.get('tile2.cur')||0,LEVELS.length-1));
+</script>
+</body>
+</html>

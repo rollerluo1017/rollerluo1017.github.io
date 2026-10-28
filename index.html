@@ -259,7 +259,7 @@ footer { border-top: 1px solid var(--rule); padding-block: 32px 56px; color: var
   </div>
 
   <div class="cat" id="music">
-    <div class="cat-head"><h2>音乐</h2><span class="en">Music</span><p>自己写的歌。</p></div>
+    <div class="cat-head"><h2>音乐</h2><span class="en">Music</span><p>自己写的曲子，点开就能听。</p></div>
     <ol class="tracks" id="tracks" hidden></ol>
     <div class="empty-music" id="music-empty">
       <svg class="staff" viewBox="0 0 320 60" aria-hidden="true">
@@ -363,6 +363,7 @@ footer { border-top: 1px solid var(--rule); padding-block: 32px 56px; color: var
           <li>前后改了六版，同时做了经典数回版本，提示系统按玩家实际盘面一步一步给</li>
         </ul>
         <div class="tags"><span>HTML</span><span>JavaScript</span><span>SVG</span><span>谜题设计</span></div>
+        <div class="links"><a href="games/zhuanzhuan.html">在线试玩</a></div>
       </div>
       <div class="sketch" aria-hidden="true">
         <div class="cap">转砖数回 · 黑线对上，橙色没对上</div>
@@ -393,6 +394,8 @@ footer { border-top: 1px solid var(--rule); padding-block: 32px 56px; color: var
 // 加歌：把 mp3 放进 music 文件夹，再在下面加一行，例如
 // { title: "歌名", file: "music/歌名.mp3", note: "2026 · 作词作曲" },
 const tracks = [
+  { title: "是非之间", file: "music/shifei-zhijian.mp3", note: "1:57" },
+  { title: "马基雅维利篇 BGM", file: "music/machiavelli-bgm.mp3", note: "5:48" },
 ];
 (function () {
   if (!tracks.length) return;
