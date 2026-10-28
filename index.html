@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Luo 做的小工具：随看随学、分支剧本编辑器、爱智。">
+<meta name="description" content="Luo 的作品：学习、音乐、偶像、工具、游戏。">
 <title>Luo 的作品</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -119,35 +119,82 @@ section.work {
 
 footer { border-top: 1px solid var(--rule); padding-block: 32px 56px; color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
 
+
+.cat { border-top: 2px solid var(--ink); padding-block: 40px 8px; scroll-margin-top: 16px; }
+.cat-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; }
+.cat-head h2 { font-family: var(--f-display); font-weight: 900; font-size: clamp(40px, 8vw, 72px); line-height: 1.1; margin: 0; }
+.cat-head .en { font-family: var(--f-mono); font-size: 13px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
+.cat-head p { flex-basis: 100%; margin: 8px 0 0; color: var(--muted); max-width: 36em; }
+.cat > section.work:first-of-type { border-top: 0; }
+.work h3 { font-family: var(--f-display); font-weight: 900; font-size: 30px; line-height: 1.3; margin: 6px 0 4px; }
+.index { grid-template-columns: repeat(5, 1fr); }
+.badge { display: inline-block; font-family: var(--f-mono); font-size: 12px; padding: 1px 8px; border-radius: 4px; background: var(--mark); color: var(--mark-ink); margin-left: 8px; vertical-align: 6px; }
+.pending { color: var(--muted); font-size: 14px; border-left: 2px solid var(--rule); padding-left: 12px; margin: 0 0 20px; }
+
+/* 音乐 */
+.tracks { list-style: none; padding: 0; margin: 24px 0 40px; display: grid; gap: 0; }
+.tracks li { display: grid; grid-template-columns: 3ch minmax(0, 1fr); gap: 4px 16px; padding-block: 16px; border-top: 1px solid var(--rule); align-items: center; }
+.tracks .no { font-family: var(--f-mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.tracks .t { font-family: var(--f-display); font-weight: 600; font-size: 20px; }
+.tracks .meta { font-size: 14px; color: var(--muted); }
+.tracks audio { grid-column: 2; width: 100%; max-width: 480px; height: 36px; }
+.empty-music { margin: 24px 0 40px; padding: 28px 20px; border: 1px dashed var(--rule); border-radius: 10px; display: grid; gap: 6px; }
+.empty-music strong { font-family: var(--f-display); font-size: 20px; }
+.empty-music span { color: var(--muted); font-size: 14px; }
+.staff { display: block; width: 100%; max-width: 320px; height: auto; margin-bottom: 8px; }
+.staff line { stroke: var(--rule); stroke-width: 1; }
+.staff ellipse { fill: var(--ink); }
+.staff path { stroke: var(--ink); stroke-width: 1.4; fill: none; }
+
+/* 偶像 */
+.phone { width: min(220px, 100%); margin: 0 auto; aspect-ratio: 9 / 18; max-width: 100%; border: 2px solid var(--ink); border-radius: 28px; padding: 14px 12px; display: grid; grid-template-rows: auto auto 1fr auto; gap: 10px; background: var(--paper); }
+.phone .bar { width: 40%; height: 6px; border-radius: 3px; background: var(--rule); margin: 0 auto; }
+.phone .hd { font-family: var(--f-display); font-weight: 900; font-size: 18px; text-align: center; }
+.phone .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; align-content: start; }
+.phone .grid i { aspect-ratio: 1; border-radius: 10px; background: var(--rule); }
+.phone .grid i:nth-child(2) { background: var(--mark); }
+.phone .ft { font-family: var(--f-mono); font-size: 11px; color: var(--muted); text-align: center; }
+
+/* 游戏 */
+.bricks { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.bricks i { aspect-ratio: 2 / 1; border-radius: 3px; background: var(--rule); }
+.bricks i.on { background: var(--node-end); }
+.bricks i.hl { background: var(--mark); }
+@media (max-width: 720px) { .index { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
 @media (max-width: 720px) {
   section.work { grid-template-columns: minmax(0, 1fr); gap: 24px; }
-  .index { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .index { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
   header.hero { padding-block: 48px 28px; }
 }
 </style>
-<style>body{margin:0} *,*::before,*::after{box-sizing:border-box} :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)} html{scroll-behavior:smooth}</style>
+<style>[hidden]{display:none!important} body{margin:0} *,*::before,*::after{box-sizing:border-box} :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)} html{scroll-behavior:smooth}</style>
 </head>
 <body>
 <div class="wrap">
   <header class="hero">
     <div class="who">rollerluo1017 · Luo</div>
-    <h1>我做的一些<mark>小工具</mark></h1>
-    <p>帮自己学英语、写故事、读哲学时顺手做的东西。都开源在 GitHub 上，下载就能用，不需要注册账号。</p>
+    <h1>我做的<mark>东西</mark>都在这里</h1>
+    <p>学英语、读哲学、写歌、追星、写故事、做游戏时顺手做出来的东西，按用途分成五类。</p>
     <nav>
       <a href="https://github.com/rollerluo1017">GitHub 主页</a>
     </nav>
   </header>
 
-  <div class="index" aria-label="作品目录">
-    <a href="#suixue"><span>浏览器插件</span><strong>随看随学</strong></a>
-    <a href="#branch"><span>网页工具</span><strong>分支剧本编辑器</strong></a>
-    <a href="#aizhi"><span>Claude Code 插件</span><strong>爱智</strong></a>
-  </div>
+  <nav class="index" aria-label="板块目录">
+    <a href="#study"><span>Study</span><strong>学习</strong></a>
+    <a href="#music"><span>Music</span><strong>音乐</strong></a>
+    <a href="#idol"><span>Idols</span><strong>偶像</strong></a>
+    <a href="#tools"><span>Tools</span><strong>工具</strong></a>
+    <a href="#games"><span>Games</span><strong>游戏</strong></a>
+  </nav>
 
+  <div class="cat" id="study">
+    <div class="cat-head"><h2>学习</h2><span class="en">Study</span></div>
   <section class="work" id="suixue">
     <div>
       <div class="kind">Chrome / Edge 插件</div>
-      <h2>随看随学</h2>
+      <h3>随看随学</h3>
       <div class="en">Suixue</div>
       <p class="lede">边看英文网页和视频边积累单词。词典和词频表都内置在插件里，查词不联网，也不依赖 AI 服务。</p>
       <ul>
@@ -172,11 +219,70 @@ footer { border-top: 1px solid var(--rule); padding-block: 32px 56px; color: var
       </div>
     </div>
   </section>
+  <section class="work" id="aizhi">
+    <div>
+      <div class="kind">Claude Code 插件</div>
+      <h3>爱智</h3>
+      <div class="en">Aizhi · philosophia</div>
+      <p class="lede">给哲学专业学生用的学习伙伴。用中文讲解，保留关键术语的原词，覆盖西方哲学、中国哲学、印度与佛教哲学。</p>
+      <ul>
+        <li>概念精讲：原词、问题语境、概念史、解读争议</li>
+        <li>苏格拉底式对话：追问预设，站在对立面反驳</li>
+        <li>原著导读：逐段带读你自己的 PDF，支持扫描版 OCR</li>
+        <li>跨传统比较，测验复习，记录学习进度</li>
+      </ul>
+      <div class="tags"><span>Claude Code</span><span>Plugin</span><span>PDFKit / Vision OCR</span></div>
+      <div class="links"><a href="https://github.com/rollerluo1017/Aizhi">源代码和安装方法</a></div>
+    </div>
+    <div class="sketch term" aria-hidden="true">
+      <div class="cap">在 Claude Code 里</div>
+      <div><span class="p">&gt;</span> <span class="c">/aizhi:compare</span> 亚里士多德的德性 儒家的德</div>
+      <div class="o">先分清原词：ἀρετή 指一件事物发挥其功能的卓越，「德」在先秦文本里更接近得之于天、见之于行的品质……</div>
+      <div><span class="p">&gt;</span> <span class="c">/aizhi:debate</span> 自由意志与决定论相容</div>
+      <div class="o">你说的「自由」是指没有外在强迫，还是指本可以做别的选择？这两种说法会把论证引到不同方向。</div>
+    </div>
+  </section>
+  </div>
 
+  <div class="cat" id="music">
+    <div class="cat-head"><h2>音乐</h2><span class="en">Music</span><p>自己写的歌。</p></div>
+    <ol class="tracks" id="tracks" hidden></ol>
+    <div class="empty-music" id="music-empty">
+      <svg class="staff" viewBox="0 0 320 60" aria-hidden="true">
+        <line x1="0" y1="10" x2="320" y2="10"/><line x1="0" y1="20" x2="320" y2="20"/><line x1="0" y1="30" x2="320" y2="30"/><line x1="0" y1="40" x2="320" y2="40"/><line x1="0" y1="50" x2="320" y2="50"/>
+        <ellipse cx="60" cy="40" rx="6" ry="4.5"/><path d="M66 40 V12"/>
+        <ellipse cx="120" cy="30" rx="6" ry="4.5"/><path d="M126 30 V4"/>
+        <ellipse cx="180" cy="35" rx="6" ry="4.5"/><path d="M186 35 V8"/>
+        <ellipse cx="240" cy="25" rx="6" ry="4.5"/><path d="M246 25 V2"/>
+      </svg>
+      <strong>歌曲正在整理，很快上传</strong>
+      <span>上传后可以直接在这里播放。</span>
+    </div>
+  </div>
+
+  <div class="cat" id="idol">
+    <div class="cat-head"><h2>偶像</h2><span class="en">Idols</span></div>
+    <section class="work" id="loveidols">
+      <div>
+        <div class="kind">小程序</div>
+        <h3>Loveidols<span class="badge">开发中</span></h3>
+        <div class="en">Loveidols</div>
+        <p class="lede">正在做的偶像主题小程序。</p>
+        <p class="pending">更详细的介绍和截图会在上线后补上。</p>
+      </div>
+      <div class="sketch" aria-hidden="true">
+        <div class="cap">开发中</div>
+        <div class="phone"><div class="bar"></div><div class="hd">Loveidols</div><div class="grid"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="ft">coming soon</div></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="cat" id="tools">
+    <div class="cat-head"><h2>工具</h2><span class="en">Tools</span></div>
   <section class="work" id="branch">
     <div>
       <div class="kind">单文件网页工具</div>
-      <h2>分支剧本编辑器</h2>
+      <h3>分支剧本编辑器</h3>
       <div class="en">branch-script-editor</div>
       <p class="lede">写分支游戏剧本的工具：主线、支线、大量选项、多结局。只有一个网页文件，双击就能打开。</p>
       <ul>
@@ -216,35 +322,53 @@ footer { border-top: 1px solid var(--rule); padding-block: 32px 56px; color: var
       <div class="legend"><span><i style="background:var(--node-main)"></i>主线</span><span><i style="background:var(--node-side)"></i>支线</span><span><i style="background:var(--node-end)"></i>结局</span></div>
     </div>
   </section>
+  </div>
 
-  <section class="work" id="aizhi">
-    <div>
-      <div class="kind">Claude Code 插件</div>
-      <h2>爱智</h2>
-      <div class="en">Aizhi · philosophia</div>
-      <p class="lede">给哲学专业学生用的学习伙伴。用中文讲解，保留关键术语的原词，覆盖西方哲学、中国哲学、印度与佛教哲学。</p>
-      <ul>
-        <li>概念精讲：原词、问题语境、概念史、解读争议</li>
-        <li>苏格拉底式对话：追问预设，站在对立面反驳</li>
-        <li>原著导读：逐段带读你自己的 PDF，支持扫描版 OCR</li>
-        <li>跨传统比较，测验复习，记录学习进度</li>
-      </ul>
-      <div class="tags"><span>Claude Code</span><span>Plugin</span><span>PDFKit / Vision OCR</span></div>
-      <div class="links"><a href="https://github.com/rollerluo1017/Aizhi">源代码和安装方法</a></div>
-    </div>
-    <div class="sketch term" aria-hidden="true">
-      <div class="cap">在 Claude Code 里</div>
-      <div><span class="p">&gt;</span> <span class="c">/aizhi:compare</span> 亚里士多德的德性 儒家的德</div>
-      <div class="o">先分清原词：ἀρετή 指一件事物发挥其功能的卓越，「德」在先秦文本里更接近得之于天、见之于行的品质……</div>
-      <div><span class="p">&gt;</span> <span class="c">/aizhi:debate</span> 自由意志与决定论相容</div>
-      <div class="o">你说的「自由」是指没有外在强迫，还是指本可以做别的选择？这两种说法会把论证引到不同方向。</div>
-    </div>
-  </section>
+  <div class="cat" id="games">
+    <div class="cat-head"><h2>游戏</h2><span class="en">Games</span></div>
+    <section class="work" id="zhuanzhuan">
+      <div>
+        <div class="kind">游戏</div>
+        <h3>转砖数回</h3>
+        <p class="lede">自己做的小游戏。</p>
+        <p class="pending">玩法介绍和试玩链接会在这里补上。</p>
+      </div>
+      <div class="sketch" aria-hidden="true">
+        <div class="cap">转砖数回</div>
+        <div class="bricks"><i></i><i class="on"></i><i></i><i></i><i class="hl"></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i class="hl"></i><i class="on"></i><i></i><i></i><i class="on"></i></div>
+      </div>
+    </section>
+  </div>
 
   <footer>
     <span>© 2026 Luo</span>
     <span>更多项目见 <a href="https://github.com/rollerluo1017">github.com/rollerluo1017</a></span>
   </footer>
 </div>
+<script>
+// 加歌：把 mp3 放进 music 文件夹，再在下面加一行，例如
+// { title: "歌名", file: "music/歌名.mp3", note: "2026 · 作词作曲" },
+const tracks = [
+];
+(function () {
+  if (!tracks.length) return;
+  const ol = document.getElementById("tracks");
+  tracks.forEach(function (t, i) {
+    const li = document.createElement("li");
+    li.innerHTML = '<span class="no">' + String(i + 1).padStart(2, "0") + '</span><div><div class="t"></div><div class="meta"></div></div>';
+    li.querySelector(".t").textContent = t.title;
+    li.querySelector(".meta").textContent = t.note || "";
+    const a = document.createElement("audio");
+    a.controls = true; a.preload = "none"; a.src = t.file;
+    li.appendChild(a);
+    ol.appendChild(li);
+  });
+  ol.hidden = false;
+  document.getElementById("music-empty").hidden = true;
+  document.addEventListener("play", function (e) {
+    document.querySelectorAll("audio").forEach(function (x) { if (x !== e.target) x.pause(); });
+  }, true);
+})();
+</script>
 </body>
 </html>
