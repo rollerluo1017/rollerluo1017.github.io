@@ -169,6 +169,13 @@ footer { border-top: 1px solid var(--rule); padding-block: 32px 56px; color: var
 .tiles .miss { stroke: var(--node-end); stroke-width: 5; stroke-linecap: round; }
 .tiles .num text { font-family: var(--f-mono); font-size: 14px; fill: var(--muted); text-anchor: middle; }
 
+.shots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; min-width: 0; }
+.shots figure { margin: 0; display: grid; gap: 8px; }
+.shots img { width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--rule); display: block; }
+.shots figcaption { font-family: var(--f-mono); font-size: 12px; color: var(--muted); text-align: center; }
+section.work.solo { grid-template-columns: minmax(0, 1fr); }
+section.work.solo .lede { max-width: 36em; }
+
 /* 游戏 */
 .bricks { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
 .bricks i { aspect-ratio: 2 / 1; border-radius: 3px; background: var(--rule); }
@@ -256,6 +263,14 @@ footer { border-top: 1px solid var(--rule); padding-block: 32px 56px; color: var
       <div class="o">你说的「自由」是指没有外在强迫，还是指本可以做别的选择？这两种说法会把论证引到不同方向。</div>
     </div>
   </section>
+    <section class="work solo" id="douyin">
+      <div>
+        <div class="kind">短视频 · 抖音</div>
+        <h3>哲学科普</h3>
+        <p class="lede">在抖音上更新哲学科普短视频。</p>
+        <div class="links"><a href="https://v.douyin.com/b4NxVPnpAig/">去抖音看</a></div>
+      </div>
+    </section>
   </div>
 
   <div class="cat" id="music">
@@ -281,22 +296,19 @@ footer { border-top: 1px solid var(--rule); padding-block: 32px 56px; color: var
         <div class="kind">微信小程序</div>
         <h3>Loveidols<span class="badge">开发中</span></h3>
         <div class="en">Loveidols</div>
-        <p class="lede">给偶像饭用的追星记录工具：记下自己各个时期推过的成员，排出属于自己的 Top 16。第一版收录坂道系、AKB48 和 SNH48 系。</p>
+        <p class="lede">给偶像饭用的追星记录工具：记下自己各个时期推过的成员，排出属于自己的 Top 16。收录坂道系、AKB48、SNH48 及姐妹团的历代正式成员。</p>
         <ul>
           <li>推的迁移轨迹：记录每一段推，按年份画出推龄条，成员毕业会自动标出来</li>
           <li>Top 16：选拔站位或 4×4 排名，可以跨团混排，导出成「单曲选拔发表」图</li>
-          <li>偶像库：9 个团 1187 位成员，资料从公开的维基百科整理，可以搜索和筛选在籍状态</li>
+          <li>偶像库：9 个团 1187 位成员，资料从公开的维基百科整理，可以搜索、筛选在籍状态，还能给歌、舞、颜、MC、钓五项打分</li>
           <li>记录同步到微信云端，只有自己能看到</li>
         </ul>
         <div class="tags"><span>微信小程序</span><span>云开发</span><span>Python 数据整理</span></div>
       </div>
-      <div class="sketch" aria-hidden="true">
-        <div class="cap">Top 16 · 选拔站位</div>
-        <div class="senbatsu">
-          <div class="row r3"><i></i><i></i><i></i><i></i><i></i></div>
-          <div class="row r2"><i></i><i></i><i></i><i></i><i></i></div>
-          <div class="row r1"><i></i><i></i><i class="c">C</i><i></i><i></i><i></i></div>
-        </div>
+      <div class="shots">
+        <figure><img src="img/loveidols-eras.jpg" alt="推的迁移轨迹页面：按年份的推龄条和每段推的卡片" loading="lazy" width="487" height="1052"><figcaption>推的迁移轨迹</figcaption></figure>
+        <figure><img src="img/loveidols-top16.jpg" alt="我的 Top 16 页面：16 位成员的排名卡片" loading="lazy" width="491" height="1050"><figcaption>Top 16</figcaption></figure>
+        <figure><img src="img/loveidols-lib.jpg" alt="偶像库页面：按团筛选的成员列表和五维分" loading="lazy" width="483" height="1044"><figcaption>偶像库</figcaption></figure>
       </div>
     </section>
   </div>
