@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Luo 的作品：学习、音乐、偶像、工具、游戏。">
+<meta name="description" content="Luo 的作品：学习、音乐、偶像、工具、游戏、自媒体。">
 <title>Luo 的作品</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: one narrow reading column; each project is a row of text + a small live-looking sketch of the tool. Highlighter marks (from 随看随学) are the one bold device. */
+/* Layout: title bar on top; a fixed left column of categories; the right pane shows one category at a time (hash routed). */
 :root {
   --paper: #f4f6f8;
   --ink: #18212c;
@@ -40,361 +40,256 @@
   --node-main: #6ea2ff; --node-side: #8592a2; --node-end: #f28b54;
   color-scheme: dark;
 }
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
 body {
-  background: var(--paper); color: var(--ink);
+  margin: 0; background: var(--paper); color: var(--ink);
   font-family: var(--f-body); font-size: 16px; line-height: 1.75;
 }
-.wrap {
-  max-width: 960px; margin: 0 auto;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-}
 a { color: var(--link); text-underline-offset: 3px; }
-a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; border-radius: 2px; }
-
+a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; border-radius: 4px; }
 mark {
   background: linear-gradient(transparent 12%, var(--mark) 12%, var(--mark) 88%, transparent 88%);
   color: var(--mark-ink); padding: 0 .15em; border-radius: 2px;
 }
-
-header.hero { padding-block: 72px 40px; }
-.hero .who { font-family: var(--f-mono); font-size: 13px; color: var(--muted); letter-spacing: .04em; }
-.hero h1 {
-  font-family: var(--f-display); font-weight: 900; font-size: clamp(36px, 7vw, 64px);
-  line-height: 1.2; margin: 12px 0 20px; text-wrap: balance; letter-spacing: .01em;
+.wrap {
+  max-width: 1080px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
-.hero p { max-width: 36em; color: var(--muted); margin: 0; font-size: 17px; }
-.hero nav { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 28px; font-size: 15px; }
 
-.index { border-top: 1px solid var(--rule); padding-block: 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.index a { text-decoration: none; color: var(--ink); display: grid; gap: 2px; }
-.index a span { font-family: var(--f-mono); font-size: 12px; color: var(--muted); letter-spacing: .04em; }
-.index a strong { font-family: var(--f-display); font-weight: 600; font-size: 18px; }
-.index a:hover strong { text-decoration: underline; text-underline-offset: 4px; }
+/* 顶部标题 */
+header.top { padding-block: 40px 28px; border-bottom: 2px solid var(--ink); display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; }
+header.top h1 { font-family: var(--f-display); font-weight: 900; font-size: clamp(32px, 6vw, 52px); line-height: 1.2; margin: 0; text-wrap: balance; }
+header.top .who { font-family: var(--f-mono); font-size: 13px; color: var(--muted); }
 
-section.work {
-  border-top: 1px solid var(--rule); padding-block: 48px;
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start;
+/* 左列分类 + 右侧内容 */
+.layout { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 48px; padding-block: 32px 64px; align-items: start; }
+nav.cats { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); display: grid; gap: 4px; }
+nav.cats a {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
+  padding: 10px 12px; border-radius: 8px; text-decoration: none; color: var(--ink);
+  font-family: var(--f-display); font-weight: 600; font-size: 20px; line-height: 1.3;
 }
-.work .kind { font-family: var(--f-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
-.work h2 { font-family: var(--f-display); font-weight: 900; font-size: 32px; line-height: 1.3; margin: 6px 0 4px; }
-.work .en { font-family: var(--f-mono); font-size: 13px; color: var(--muted); }
-.work .lede { margin: 16px 0; font-size: 17px; }
-.work ul { margin: 0 0 20px; padding-left: 1.2em; display: grid; gap: 6px; color: var(--ink); }
-.work ul li::marker { color: var(--muted); }
-.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
-.tags span { font-family: var(--f-mono); font-size: 12px; border: 1px solid var(--rule); border-radius: 999px; padding: 2px 10px; color: var(--muted); }
+nav.cats a span { font-family: var(--f-mono); font-weight: 400; font-size: 11px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+nav.cats a:hover { background: var(--panel); }
+nav.cats a[aria-current="page"] { background: var(--mark); color: var(--mark-ink); }
+nav.cats a[aria-current="page"] span { color: var(--mark-ink); }
+
+.pane h2 { font-family: var(--f-display); font-weight: 900; font-size: clamp(36px, 6vw, 56px); line-height: 1.1; margin: 0 0 8px; }
+.pane > .sub { color: var(--muted); margin: 0 0 24px; }
+.items { display: grid; gap: 20px; }
+
+.item {
+  background: var(--panel); border: 1px solid var(--rule); border-radius: 12px; padding: 24px;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: center;
+}
+.item.solo { grid-template-columns: minmax(0, 1fr); }
+.item .kind { font-family: var(--f-mono); font-size: 12px; color: var(--muted); letter-spacing: .06em; }
+.item h3 { font-family: var(--f-display); font-weight: 900; font-size: 28px; line-height: 1.3; margin: 4px 0 10px; }
+.item p { margin: 0 0 16px; max-width: 34em; }
 .links { display: flex; flex-wrap: wrap; gap: 8px 20px; font-weight: 500; }
+.badge { display: inline-block; font-family: var(--f-mono); font-size: 12px; padding: 1px 8px; border-radius: 4px; background: var(--mark); color: var(--mark-ink); margin-left: 8px; vertical-align: 5px; font-weight: 500; }
 
-.sketch {
-  background: var(--panel); border: 1px solid var(--rule); border-radius: 10px;
-  padding: 20px; font-size: 15px; min-width: 0;
-}
-.sketch .cap { font-family: var(--f-mono); font-size: 11px; color: var(--muted); letter-spacing: .06em; margin-bottom: 12px; }
+.vis { min-width: 0; }
+.cap { font-family: var(--f-mono); font-size: 11px; color: var(--muted); letter-spacing: .06em; margin-bottom: 10px; }
 
-/* 随看随学 sketch */
-.reading { font-family: Georgia, "Times New Roman", serif; font-size: 17px; line-height: 1.9; }
-.reading mark { cursor: help; }
-.card {
-  margin-top: 14px; border: 1px solid var(--rule); border-radius: 8px; padding: 12px 14px;
-  font-family: var(--f-body); font-size: 14px; display: grid; gap: 4px; background: var(--paper);
-}
-.card b { font-family: Georgia, serif; font-size: 17px; }
+/* 随看随学 */
+.reading { font-family: Georgia, "Times New Roman", serif; font-size: 16px; line-height: 1.9; }
+.card { margin-top: 12px; border: 1px solid var(--rule); border-radius: 8px; padding: 10px 14px; font-size: 14px; display: grid; gap: 2px; background: var(--paper); }
+.card b { font-family: Georgia, serif; font-size: 16px; }
 .card .ipa { font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
-.card .acts { display: flex; gap: 8px; margin-top: 6px; }
-.card .acts span { font-size: 12px; border: 1px solid var(--rule); border-radius: 6px; padding: 2px 8px; }
 
-/* 分支剧本 sketch */
-.graph svg { width: 100%; height: auto; display: block; }
-.graph text { font-family: var(--f-body); font-size: 12px; fill: var(--ink); }
-.graph .edge { stroke: var(--node-side); stroke-width: 1.5; fill: none; }
-.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--muted); margin-top: 10px; }
-.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
-
-/* 爱智 sketch */
+/* 爱智 */
 .term { font-family: var(--f-mono); font-size: 13px; line-height: 1.8; overflow-x: auto; }
 .term .p { color: var(--muted); }
 .term .c { color: var(--link); }
-.term .o { font-family: var(--f-body); font-size: 14px; color: var(--ink); white-space: normal; margin: 6px 0 12px; padding-left: 12px; border-left: 2px solid var(--rule); }
+.term .o { font-family: var(--f-body); font-size: 14px; margin: 4px 0 0; padding-left: 12px; border-left: 2px solid var(--rule); }
 
-footer { border-top: 1px solid var(--rule); padding-block: 32px 56px; color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+/* 分支剧本 */
+.graph svg { width: 100%; height: auto; display: block; }
+.graph text { font-family: var(--f-body); font-size: 12px; }
+.graph .edge { stroke: var(--node-side); stroke-width: 1.5; fill: none; }
 
+/* 偶像截图 */
+.shots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.shots figure { margin: 0; display: grid; gap: 6px; }
+.shots img { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--rule); display: block; }
+.shots figcaption { font-family: var(--f-mono); font-size: 11px; color: var(--muted); text-align: center; }
 
-.cat { border-top: 2px solid var(--ink); padding-block: 40px 8px; scroll-margin-top: 16px; }
-.cat-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; }
-.cat-head h2 { font-family: var(--f-display); font-weight: 900; font-size: clamp(40px, 8vw, 72px); line-height: 1.1; margin: 0; }
-.cat-head .en { font-family: var(--f-mono); font-size: 13px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
-.cat-head p { flex-basis: 100%; margin: 8px 0 0; color: var(--muted); max-width: 36em; }
-.cat > section.work:first-of-type { border-top: 0; }
-.work h3 { font-family: var(--f-display); font-weight: 900; font-size: 30px; line-height: 1.3; margin: 6px 0 4px; }
-.index { grid-template-columns: repeat(5, 1fr); }
-.badge { display: inline-block; font-family: var(--f-mono); font-size: 12px; padding: 1px 8px; border-radius: 4px; background: var(--mark); color: var(--mark-ink); margin-left: 8px; vertical-align: 6px; }
-.pending { color: var(--muted); font-size: 14px; border-left: 2px solid var(--rule); padding-left: 12px; margin: 0 0 20px; }
+/* 游戏截图 */
+.game-shot { width: 100%; max-width: 360px; height: auto; display: block; margin: 0 auto; border-radius: 10px; }
 
 /* 音乐 */
-.tracks { list-style: none; padding: 0; margin: 24px 0 40px; display: grid; gap: 0; }
-.tracks li { display: grid; grid-template-columns: 3ch minmax(0, 1fr); gap: 4px 16px; padding-block: 16px; border-top: 1px solid var(--rule); align-items: center; }
+.tracks { list-style: none; padding: 0; margin: 0; display: grid; }
+.tracks li { display: grid; grid-template-columns: 3ch minmax(0, 1fr); gap: 4px 16px; padding-block: 18px; border-top: 1px solid var(--rule); align-items: center; }
+.tracks li:first-child { border-top: 0; padding-top: 0; }
 .tracks .no { font-family: var(--f-mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .tracks .t { font-family: var(--f-display); font-weight: 600; font-size: 20px; }
-.tracks .meta { font-size: 14px; color: var(--muted); }
+.tracks .meta { font-size: 13px; color: var(--muted); font-family: var(--f-mono); }
 .tracks audio { grid-column: 2; width: 100%; max-width: 480px; height: 36px; }
-.empty-music { margin: 24px 0 40px; padding: 28px 20px; border: 1px dashed var(--rule); border-radius: 10px; display: grid; gap: 6px; }
-.empty-music strong { font-family: var(--f-display); font-size: 20px; }
-.empty-music span { color: var(--muted); font-size: 14px; }
-.staff { display: block; width: 100%; max-width: 320px; height: auto; margin-bottom: 8px; }
-.staff line { stroke: var(--rule); stroke-width: 1; }
-.staff ellipse { fill: var(--ink); }
-.staff path { stroke: var(--ink); stroke-width: 1.4; fill: none; }
 
-/* 偶像 */
-.phone { width: min(220px, 100%); margin: 0 auto; aspect-ratio: 9 / 18; max-width: 100%; border: 2px solid var(--ink); border-radius: 28px; padding: 14px 12px; display: grid; grid-template-rows: auto auto 1fr auto; gap: 10px; background: var(--paper); }
-.phone .bar { width: 40%; height: 6px; border-radius: 3px; background: var(--rule); margin: 0 auto; }
-.phone .hd { font-family: var(--f-display); font-weight: 900; font-size: 18px; text-align: center; }
-.phone .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; align-content: start; }
-.phone .grid i { aspect-ratio: 1; border-radius: 10px; background: var(--rule); }
-.phone .grid i:nth-child(2) { background: var(--mark); }
-.phone .ft { font-family: var(--f-mono); font-size: 11px; color: var(--muted); text-align: center; }
+footer { border-top: 1px solid var(--rule); padding-block: 24px 48px; color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
 
-.senbatsu { display: grid; gap: 10px; padding-block: 8px; }
-.senbatsu .row { display: flex; justify-content: center; gap: 8px; }
-.senbatsu i { width: 36px; aspect-ratio: 3 / 4; border-radius: 6px; background: var(--rule); display: grid; place-items: center; font-style: normal; font-family: var(--f-mono); font-size: 12px; color: var(--mark-ink); }
-.senbatsu .r1 i { width: 40px; }
-.senbatsu i.c { background: var(--mark); width: 46px; font-weight: 500; }
-@media (max-width: 420px) { .senbatsu i { width: 28px; } .senbatsu .r1 i { width: 32px; } .senbatsu i.c { width: 38px; } }
-
-.tiles { width: 100%; height: auto; display: block; }
-.tiles .cells rect { fill: var(--paper); stroke: var(--rule); stroke-width: 1; }
-.tiles .cells rect.fixed { fill: var(--rule); }
-.tiles .loop { fill: none; stroke: var(--ink); stroke-width: 4; stroke-linejoin: round; }
-.tiles .miss { stroke: var(--node-end); stroke-width: 5; stroke-linecap: round; }
-.tiles .num text { font-family: var(--f-mono); font-size: 14px; fill: var(--muted); text-anchor: middle; }
-
-.shots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; min-width: 0; }
-.shots figure { margin: 0; display: grid; gap: 8px; }
-.shots img { width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--rule); display: block; }
-.shots figcaption { font-family: var(--f-mono); font-size: 12px; color: var(--muted); text-align: center; }
-section.work.solo { grid-template-columns: minmax(0, 1fr); }
-section.work.solo .lede { max-width: 36em; }
-
-/* 游戏 */
-.bricks { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
-.bricks i { aspect-ratio: 2 / 1; border-radius: 3px; background: var(--rule); }
-.bricks i.on { background: var(--node-end); }
-.bricks i.hl { background: var(--mark); }
-@media (max-width: 720px) { .index { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-
-@media (max-width: 720px) {
-  section.work { grid-template-columns: minmax(0, 1fr); gap: 24px; }
-  .index { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-  header.hero { padding-block: 48px 28px; }
+@media (max-width: 860px) {
+  .item { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .layout { grid-template-columns: 132px minmax(0, 1fr); gap: 24px; }
+}
+@media (max-width: 560px) {
+  header.top { padding-block: 28px 20px; }
+  .layout { grid-template-columns: 76px minmax(0, 1fr); gap: 14px; padding-block: 20px 48px; }
+  nav.cats a { flex-direction: column; align-items: flex-start; gap: 0; padding: 8px; font-size: 17px; }
+  nav.cats a span { font-size: 9px; }
+  .item { padding: 16px; }
+  .item h3 { font-size: 22px; }
+  .pane h2 { font-size: 32px; }
+  .shots { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pane:not([hidden]) { animation: in .25s ease-out; }
+  @keyframes in { from { opacity: .4; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 }
 </style>
-<style>[hidden]{display:none!important} body{margin:0} *,*::before,*::after{box-sizing:border-box} :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)} html{scroll-behavior:smooth}</style>
 </head>
 <body>
 <div class="wrap">
-  <header class="hero">
-    <div class="who">rollerluo1017 · Luo</div>
-    <h1>我做的<mark>东西</mark>都在这里</h1>
-    <p>学英语、读哲学、写歌、追星、写故事、做游戏时顺手做出来的东西，按用途分成五类。</p>
-    <nav>
-      <a href="https://github.com/rollerluo1017">GitHub 主页</a>
-    </nav>
+  <header class="top">
+    <h1>Luo 的<mark>作品</mark></h1>
+    <span class="who">rollerluo1017 · <a href="https://github.com/rollerluo1017">GitHub</a></span>
   </header>
 
-  <nav class="index" aria-label="板块目录">
-    <a href="#study"><span>Study</span><strong>学习</strong></a>
-    <a href="#music"><span>Music</span><strong>音乐</strong></a>
-    <a href="#idol"><span>Idols</span><strong>偶像</strong></a>
-    <a href="#tools"><span>Tools</span><strong>工具</strong></a>
-    <a href="#games"><span>Games</span><strong>游戏</strong></a>
-  </nav>
+  <div class="layout">
+    <nav class="cats" aria-label="分类">
+      <a href="#study">学习<span>Study</span></a>
+      <a href="#music">音乐<span>Music</span></a>
+      <a href="#idol">偶像<span>Idols</span></a>
+      <a href="#tools">工具<span>Tools</span></a>
+      <a href="#games">游戏<span>Games</span></a>
+      <a href="#media">自媒体<span>Media</span></a>
+    </nav>
 
-  <div class="cat" id="study">
-    <div class="cat-head"><h2>学习</h2><span class="en">Study</span></div>
-  <section class="work" id="suixue">
-    <div>
-      <div class="kind">Chrome / Edge 插件</div>
-      <h3>随看随学</h3>
-      <div class="en">Suixue</div>
-      <p class="lede">边看英文网页和视频边积累单词。词典和词频表都内置在插件里，查词不联网，也不依赖 AI 服务。</p>
-      <ul>
-        <li>自适应词汇量测试，按你的水平决定哪些词算生词</li>
-        <li>网页上的生词自动<mark>标黄</mark>，悬停看音标和释义</li>
-        <li>划词加入单词本，同时记下原句和网址</li>
-        <li>总结视频字幕里的高频词，支持 YouTube 和 B 站</li>
-        <li>没有字幕时用本地 Whisper 模型听写</li>
-        <li>单词本可导出 CSV，导入 Excel 或 Anki</li>
-      </ul>
-      <div class="tags"><span>Manifest V3</span><span>ECDICT</span><span>Transformers.js</span><span>Whisper tiny.en</span></div>
-      <div class="links"><a href="https://github.com/rollerluo1017/Suixue">源代码和安装方法</a></div>
-    </div>
-    <div class="sketch" aria-hidden="true">
-      <div class="cap">在英文网页上</div>
-      <div class="reading">The committee reached a <mark>tentative</mark> agreement after weeks of <mark>deliberation</mark>, though several members remained <mark>skeptical</mark>.</div>
-      <div class="card">
-        <b>deliberation</b>
-        <span class="ipa">/dɪˌlɪbəˈreɪʃən/</span>
-        <span>n. 深思熟虑；审议，商讨</span>
-        <div class="acts"><span>加入单词本</span><span>我认识</span></div>
-      </div>
-    </div>
-  </section>
-  <section class="work" id="aizhi">
-    <div>
-      <div class="kind">Claude Code 插件</div>
-      <h3>爱智</h3>
-      <div class="en">Aizhi · philosophia</div>
-      <p class="lede">给哲学专业学生用的学习伙伴。用中文讲解，保留关键术语的原词，覆盖西方哲学、中国哲学、印度与佛教哲学。</p>
-      <ul>
-        <li>概念精讲：原词、问题语境、概念史、解读争议</li>
-        <li>苏格拉底式对话：追问预设，站在对立面反驳</li>
-        <li>原著导读：逐段带读你自己的 PDF，支持扫描版 OCR</li>
-        <li>跨传统比较，测验复习，记录学习进度</li>
-      </ul>
-      <div class="tags"><span>Claude Code</span><span>Plugin</span><span>PDFKit / Vision OCR</span></div>
-      <div class="links"><a href="https://github.com/rollerluo1017/Aizhi">源代码和安装方法</a></div>
-    </div>
-    <div class="sketch term" aria-hidden="true">
-      <div class="cap">在 Claude Code 里</div>
-      <div><span class="p">&gt;</span> <span class="c">/aizhi:compare</span> 亚里士多德的德性 儒家的德</div>
-      <div class="o">先分清原词：ἀρετή 指一件事物发挥其功能的卓越，「德」在先秦文本里更接近得之于天、见之于行的品质……</div>
-      <div><span class="p">&gt;</span> <span class="c">/aizhi:debate</span> 自由意志与决定论相容</div>
-      <div class="o">你说的「自由」是指没有外在强迫，还是指本可以做别的选择？这两种说法会把论证引到不同方向。</div>
-    </div>
-  </section>
-    <section class="work solo" id="douyin">
-      <div>
-        <div class="kind">短视频 · 抖音</div>
-        <h3>哲学科普</h3>
-        <p class="lede">在抖音上更新哲学科普短视频。</p>
-        <div class="links"><a href="https://v.douyin.com/b4NxVPnpAig/">去抖音看</a></div>
-      </div>
-    </section>
-  </div>
+    <main>
+      <section class="pane" id="study" aria-label="学习">
+        <h2>学习</h2>
+        <div class="items">
+          <article class="item">
+            <div>
+              <div class="kind">Chrome / Edge 插件</div>
+              <h3>随看随学</h3>
+              <p>边看英文网页和视频边积累单词的浏览器插件。生词自动高亮，划词就能加入单词本，查词不用联网。</p>
+              <div class="links"><a href="https://github.com/rollerluo1017/Suixue">查看和安装</a></div>
+            </div>
+            <div class="vis" aria-hidden="true">
+              <div class="reading">The committee reached a <mark>tentative</mark> agreement after weeks of <mark>deliberation</mark>.</div>
+              <div class="card"><b>deliberation</b><span class="ipa">/dɪˌlɪbəˈreɪʃən/</span><span>n. 深思熟虑；审议，商讨</span></div>
+            </div>
+          </article>
+          <article class="item">
+            <div>
+              <div class="kind">Claude Code 插件</div>
+              <h3>爱智</h3>
+              <p>给哲学专业学生用的学习插件。可以讲概念、陪你辩论、带读原著，覆盖西方、中国和印度哲学。</p>
+              <div class="links"><a href="https://github.com/rollerluo1017/Aizhi">查看和安装</a></div>
+            </div>
+            <div class="vis term" aria-hidden="true">
+              <div><span class="p">&gt;</span> <span class="c">/aizhi:debate</span> 自由意志与决定论相容</div>
+              <div class="o">你说的「自由」是指没有外在强迫，还是指本可以做别的选择？</div>
+            </div>
+          </article>
+        </div>
+      </section>
 
-  <div class="cat" id="music">
-    <div class="cat-head"><h2>音乐</h2><span class="en">Music</span><p>自己写的曲子，点开就能听。</p></div>
-    <ol class="tracks" id="tracks" hidden></ol>
-    <div class="empty-music" id="music-empty">
-      <svg class="staff" viewBox="0 0 320 60" aria-hidden="true">
-        <line x1="0" y1="10" x2="320" y2="10"/><line x1="0" y1="20" x2="320" y2="20"/><line x1="0" y1="30" x2="320" y2="30"/><line x1="0" y1="40" x2="320" y2="40"/><line x1="0" y1="50" x2="320" y2="50"/>
-        <ellipse cx="60" cy="40" rx="6" ry="4.5"/><path d="M66 40 V12"/>
-        <ellipse cx="120" cy="30" rx="6" ry="4.5"/><path d="M126 30 V4"/>
-        <ellipse cx="180" cy="35" rx="6" ry="4.5"/><path d="M186 35 V8"/>
-        <ellipse cx="240" cy="25" rx="6" ry="4.5"/><path d="M246 25 V2"/>
-      </svg>
-      <strong>歌曲正在整理，很快上传</strong>
-      <span>上传后可以直接在这里播放。</span>
-    </div>
-  </div>
+      <section class="pane" id="music" aria-label="音乐" hidden>
+        <h2>音乐</h2>
+        <p class="sub">自己写的曲子，点开就能听。</p>
+        <div class="item solo"><ol class="tracks" id="tracks"></ol></div>
+      </section>
 
-  <div class="cat" id="idol">
-    <div class="cat-head"><h2>偶像</h2><span class="en">Idols</span></div>
-    <section class="work" id="loveidols">
-      <div>
-        <div class="kind">微信小程序</div>
-        <h3>Loveidols<span class="badge">开发中</span></h3>
-        <div class="en">Loveidols</div>
-        <p class="lede">给偶像饭用的追星记录工具：记下自己各个时期推过的成员，排出属于自己的 Top 16。收录坂道系、AKB48、SNH48 及姐妹团的历代正式成员。</p>
-        <ul>
-          <li>推的迁移轨迹：记录每一段推，按年份画出推龄条，成员毕业会自动标出来</li>
-          <li>Top 16：选拔站位或 4×4 排名，可以跨团混排，导出成「单曲选拔发表」图</li>
-          <li>偶像库：9 个团 1187 位成员，资料从公开的维基百科整理，可以搜索、筛选在籍状态，还能给歌、舞、颜、MC、钓五项打分</li>
-          <li>记录同步到微信云端，只有自己能看到</li>
-        </ul>
-        <div class="tags"><span>微信小程序</span><span>云开发</span><span>Python 数据整理</span></div>
-      </div>
-      <div class="shots">
-        <figure><img src="img/loveidols-eras.jpg" alt="推的迁移轨迹页面：按年份的推龄条和每段推的卡片" loading="lazy" width="487" height="1052"><figcaption>推的迁移轨迹</figcaption></figure>
-        <figure><img src="img/loveidols-top16.jpg" alt="我的 Top 16 页面：16 位成员的排名卡片" loading="lazy" width="491" height="1050"><figcaption>Top 16</figcaption></figure>
-        <figure><img src="img/loveidols-lib.jpg" alt="偶像库页面：按团筛选的成员列表和五维分" loading="lazy" width="483" height="1044"><figcaption>偶像库</figcaption></figure>
-      </div>
-    </section>
-  </div>
+      <section class="pane" id="idol" aria-label="偶像" hidden>
+        <h2>偶像</h2>
+        <div class="items">
+          <article class="item">
+            <div>
+              <div class="kind">微信小程序</div>
+              <h3>Loveidols<span class="badge">开发中</span></h3>
+              <p>给偶像饭用的追星记录小程序，记下每一段推，排出自己的 Top 16。偶像库收录坂道系、AKB48、SNH48 及姐妹团共 1187 位成员。</p>
+            </div>
+            <div class="vis shots">
+              <figure><img src="img/loveidols-eras.jpg" alt="推的迁移轨迹页面" width="487" height="1052"><figcaption>推的迁移轨迹</figcaption></figure>
+              <figure><img src="img/loveidols-top16.jpg" alt="我的 Top 16 页面" width="491" height="1050"><figcaption>Top 16</figcaption></figure>
+              <figure><img src="img/loveidols-lib.jpg" alt="偶像库页面" width="483" height="1044"><figcaption>偶像库</figcaption></figure>
+            </div>
+          </article>
+        </div>
+      </section>
 
-  <div class="cat" id="tools">
-    <div class="cat-head"><h2>工具</h2><span class="en">Tools</span></div>
-  <section class="work" id="branch">
-    <div>
-      <div class="kind">单文件网页工具</div>
-      <h3>分支剧本编辑器</h3>
-      <div class="en">branch-script-editor</div>
-      <p class="lede">写分支游戏剧本的工具：主线、支线、大量选项、多结局。只有一个网页文件，双击就能打开。</p>
-      <ul>
-        <li>在画布上拖线连接节点，画出整张分支图</li>
-        <li>选项可以带条件和效果，比如 <code>好感 &gt;= 3</code></li>
-        <li>像玩游戏一样试玩，随时查看和修改变量</li>
-        <li>自动找出死路、漏连的选项和走不到的节点</li>
-        <li>模拟所有路线，列出每个结局能否达成</li>
-        <li>导出 JSON 和朋友交换剧本，或导出 Markdown 文本</li>
-      </ul>
-      <div class="tags"><span>HTML</span><span>JavaScript</span><span>离线可用</span></div>
-      <div class="links"><a href="https://github.com/rollerluo1017/branch-script-editor">源代码</a></div>
-    </div>
-    <div class="sketch graph" aria-hidden="true">
-      <div class="cap">分支图</div>
-      <svg viewBox="0 0 360 220" role="img">
-        <path class="edge" d="M84 40 C120 40,120 40,150 40"/>
-        <path class="edge" d="M84 40 C110 40,110 120,150 120"/>
-        <path class="edge" d="M222 40 C250 40,250 40,276 40"/>
-        <path class="edge" d="M222 40 C250 40,250 110,276 110"/>
-        <path class="edge" d="M222 120 C250 120,250 180,276 180"/>
-        <path class="edge" d="M222 120 C250 120,250 110,276 110" stroke-dasharray="4 3"/>
-        <rect x="12" y="24" width="72" height="32" rx="6" fill="var(--node-main)"/>
-        <text x="48" y="44" text-anchor="middle" style="fill:#fff">序章</text>
-        <rect x="150" y="24" width="72" height="32" rx="6" fill="var(--node-main)"/>
-        <text x="186" y="44" text-anchor="middle" style="fill:#fff">进城</text>
-        <rect x="150" y="104" width="72" height="32" rx="6" fill="var(--node-side)"/>
-        <text x="186" y="124" text-anchor="middle" style="fill:#fff">留在村里</text>
-        <rect x="276" y="24" width="72" height="32" rx="6" fill="var(--node-end)"/>
-        <text x="312" y="44" text-anchor="middle" style="fill:#fff">结局 A</text>
-        <rect x="276" y="94" width="72" height="32" rx="6" fill="var(--node-end)"/>
-        <text x="312" y="114" text-anchor="middle" style="fill:#fff">结局 B</text>
-        <rect x="276" y="164" width="72" height="32" rx="6" fill="var(--node-end)"/>
-        <text x="312" y="184" text-anchor="middle" style="fill:#fff">结局 C</text>
-        <text x="238" y="150" text-anchor="middle" style="fill:var(--muted);font-size:10px">好感 &gt;= 3</text>
-      </svg>
-      <div class="legend"><span><i style="background:var(--node-main)"></i>主线</span><span><i style="background:var(--node-side)"></i>支线</span><span><i style="background:var(--node-end)"></i>结局</span></div>
-    </div>
-  </section>
-  </div>
+      <section class="pane" id="tools" aria-label="工具" hidden>
+        <h2>工具</h2>
+        <div class="items">
+          <article class="item">
+            <div>
+              <div class="kind">网页工具</div>
+              <h3>分支剧本编辑器</h3>
+              <p>写分支游戏剧本的网页工具，在画布上连出主线、支线和多个结局。写完可以直接试玩，还能自动找出死路和走不到的结局。</p>
+              <div class="links"><a href="https://github.com/rollerluo1017/branch-script-editor">查看和下载</a></div>
+            </div>
+            <div class="vis graph" aria-hidden="true">
+              <svg viewBox="0 0 360 220">
+                <path class="edge" d="M84 40 C120 40,120 40,150 40"/>
+                <path class="edge" d="M84 40 C110 40,110 120,150 120"/>
+                <path class="edge" d="M222 40 C250 40,250 40,276 40"/>
+                <path class="edge" d="M222 40 C250 40,250 110,276 110"/>
+                <path class="edge" d="M222 120 C250 120,250 180,276 180"/>
+                <rect x="12" y="24" width="72" height="32" rx="6" fill="var(--node-main)"/>
+                <text x="48" y="44" text-anchor="middle" fill="#fff">序章</text>
+                <rect x="150" y="24" width="72" height="32" rx="6" fill="var(--node-main)"/>
+                <text x="186" y="44" text-anchor="middle" fill="#fff">进城</text>
+                <rect x="150" y="104" width="72" height="32" rx="6" fill="var(--node-side)"/>
+                <text x="186" y="124" text-anchor="middle" fill="#fff">留在村里</text>
+                <rect x="276" y="24" width="72" height="32" rx="6" fill="var(--node-end)"/>
+                <text x="312" y="44" text-anchor="middle" fill="#fff">结局 A</text>
+                <rect x="276" y="94" width="72" height="32" rx="6" fill="var(--node-end)"/>
+                <text x="312" y="114" text-anchor="middle" fill="#fff">结局 B</text>
+                <rect x="276" y="164" width="72" height="32" rx="6" fill="var(--node-end)"/>
+                <text x="312" y="184" text-anchor="middle" fill="#fff">结局 C</text>
+              </svg>
+            </div>
+          </article>
+        </div>
+      </section>
 
-  <div class="cat" id="games">
-    <div class="cat-head"><h2>游戏</h2><span class="en">Games</span></div>
-    <section class="work" id="zhuanzhuan">
-      <div>
-        <div class="kind">解谜游戏 · 游戏比赛作品</div>
-        <h3>转砖数回</h3>
-        <p class="lede">把数回（Slitherlink）改成转砖块的玩法：每块砖上有几条边，点一下转 90°，让所有边对上，连成一个完整的圈就过关。</p>
-        <ul>
-          <li>两块砖之间的边都有才变成黑线，只有一块有就显示橙色，一眼看出哪里没对上</li>
-          <li>深色砖固定不能转，可以从它旁边开始推</li>
-          <li>3 个教学关带着上手，50 个正式关卡，盘面从 4×4 逐步加大到 8×9</li>
-          <li>卡住了可以点提示，会告诉你下一块砖该怎么放</li>
-          <li>前后改了六版，同时做了经典数回版本，提示系统按玩家实际盘面一步一步给</li>
-        </ul>
-        <div class="tags"><span>HTML</span><span>JavaScript</span><span>SVG</span><span>谜题设计</span></div>
-        <div class="links"><a href="games/zhuanzhuan.html">在线试玩</a></div>
-      </div>
-      <div class="sketch" aria-hidden="true">
-        <div class="cap">转砖数回 · 黑线对上，橙色没对上</div>
-        <svg class="tiles" viewBox="0 0 250 190">
-          <g class="cells">
-            <rect x="5" y="5" width="60" height="60"/><rect x="65" y="5" width="60" height="60" class="fixed"/><rect x="125" y="5" width="60" height="60"/><rect x="185" y="5" width="60" height="60"/>
-            <rect x="5" y="65" width="60" height="60"/><rect x="65" y="65" width="60" height="60"/><rect x="125" y="65" width="60" height="60"/><rect x="185" y="65" width="60" height="60" class="fixed"/>
-            <rect x="5" y="125" width="60" height="60" class="fixed"/><rect x="65" y="125" width="60" height="60"/><rect x="125" y="125" width="60" height="60"/><rect x="185" y="125" width="60" height="60"/>
-          </g>
-          <path class="loop" d="M5 5 H185 V65 H245 V185 H125 V125 H65 V185 H5 Z"/>
-          <path class="miss" d="M125 125 V185"/>
-          <g class="num">
-            <text x="35" y="41">2</text><text x="95" y="41">1</text><text x="155" y="41">2</text><text x="215" y="41">1</text>
-            <text x="35" y="101">1</text><text x="95" y="101">0</text><text x="155" y="101">0</text><text x="215" y="101">2</text>
-            <text x="35" y="161">3</text><text x="95" y="161">2</text><text x="155" y="161">2</text><text x="215" y="161">2</text>
-          </g>
-        </svg>
-      </div>
-    </section>
+      <section class="pane" id="games" aria-label="游戏" hidden>
+        <h2>游戏</h2>
+        <div class="items">
+          <article class="item">
+            <div>
+              <div class="kind">解谜游戏</div>
+              <h3>转砖数回</h3>
+              <p>把数回改成转砖块玩法的解谜游戏。点砖转 90°，让所有边对上、连成一个圈就过关。</p>
+              <div class="links"><a href="games/zhuanzhuan.html">在线试玩</a></div>
+            </div>
+            <div class="vis">
+              <img class="game-shot" src="img/zhuanzhuan.jpg" alt="转砖数回游戏盘面：数字砖块和连线" width="513" height="519">
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="pane" id="media" aria-label="自媒体" hidden>
+        <h2>自媒体</h2>
+        <div class="items">
+          <article class="item solo">
+            <div>
+              <div class="kind">抖音</div>
+              <h3>哲学科普</h3>
+              <p>在抖音更新哲学科普短视频。</p>
+              <div class="links"><a href="https://v.douyin.com/b4NxVPnpAig/">去抖音看</a></div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
   </div>
 
   <footer>
@@ -402,15 +297,14 @@ section.work.solo .lede { max-width: 36em; }
     <span>更多项目见 <a href="https://github.com/rollerluo1017">github.com/rollerluo1017</a></span>
   </footer>
 </div>
+
 <script>
-// 加歌：把 mp3 放进 music 文件夹，再在下面加一行，例如
-// { title: "歌名", file: "music/歌名.mp3", note: "2026 · 作词作曲" },
+// 加歌：把 mp3 放进 music 文件夹，再在下面加一行
 const tracks = [
   { title: "是非之间", file: "music/shifei-zhijian.mp3", note: "1:57" },
   { title: "马基雅维利篇 BGM", file: "music/machiavelli-bgm.mp3", note: "5:48" },
 ];
 (function () {
-  if (!tracks.length) return;
   const ol = document.getElementById("tracks");
   tracks.forEach(function (t, i) {
     const li = document.createElement("li");
@@ -422,11 +316,33 @@ const tracks = [
     li.appendChild(a);
     ol.appendChild(li);
   });
-  ol.hidden = false;
-  document.getElementById("music-empty").hidden = true;
   document.addEventListener("play", function (e) {
     document.querySelectorAll("audio").forEach(function (x) { if (x !== e.target) x.pause(); });
   }, true);
+
+  // 分类切换
+  const panes = Array.from(document.querySelectorAll(".pane"));
+  const links = Array.from(document.querySelectorAll("nav.cats a"));
+  function show() {
+    const id = location.hash.slice(1);
+    const target = panes.some(function (p) { return p.id === id; }) ? id : "study";
+    panes.forEach(function (p) { p.hidden = p.id !== target; });
+    links.forEach(function (a) {
+      if (a.getAttribute("href") === "#" + target) a.setAttribute("aria-current", "page");
+      else a.removeAttribute("aria-current");
+    });
+    document.querySelectorAll(".pane[hidden] audio").forEach(function (x) { x.pause(); });
+  }
+  links.forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      history.replaceState(null, "", a.getAttribute("href"));
+      show();
+      if (window.innerWidth <= 560) window.scrollTo({ top: 0 });
+    });
+  });
+  window.addEventListener("hashchange", show);
+  show();
 })();
 </script>
 </body>
