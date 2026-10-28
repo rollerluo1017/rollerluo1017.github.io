@@ -155,6 +155,13 @@ footer { border-top: 1px solid var(--rule); padding-block: 32px 56px; color: var
 .phone .grid i:nth-child(2) { background: var(--mark); }
 .phone .ft { font-family: var(--f-mono); font-size: 11px; color: var(--muted); text-align: center; }
 
+.senbatsu { display: grid; gap: 10px; padding-block: 8px; }
+.senbatsu .row { display: flex; justify-content: center; gap: 8px; }
+.senbatsu i { width: 36px; aspect-ratio: 3 / 4; border-radius: 6px; background: var(--rule); display: grid; place-items: center; font-style: normal; font-family: var(--f-mono); font-size: 12px; color: var(--mark-ink); }
+.senbatsu .r1 i { width: 40px; }
+.senbatsu i.c { background: var(--mark); width: 46px; font-weight: 500; }
+@media (max-width: 420px) { .senbatsu i { width: 28px; } .senbatsu .r1 i { width: 32px; } .senbatsu i.c { width: 38px; } }
+
 /* 游戏 */
 .bricks { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
 .bricks i { aspect-ratio: 2 / 1; border-radius: 3px; background: var(--rule); }
@@ -264,15 +271,26 @@ footer { border-top: 1px solid var(--rule); padding-block: 32px 56px; color: var
     <div class="cat-head"><h2>偶像</h2><span class="en">Idols</span></div>
     <section class="work" id="loveidols">
       <div>
-        <div class="kind">小程序</div>
+        <div class="kind">微信小程序</div>
         <h3>Loveidols<span class="badge">开发中</span></h3>
         <div class="en">Loveidols</div>
-        <p class="lede">正在做的偶像主题小程序。</p>
-        <p class="pending">更详细的介绍和截图会在上线后补上。</p>
+        <p class="lede">给偶像饭用的追星记录工具：记下自己各个时期推过的成员，排出属于自己的 Top 16。第一版收录坂道系、AKB48 和 SNH48 系。</p>
+        <ul>
+          <li>推的迁移轨迹：记录每一段推，按年份画出推龄条，成员毕业会自动标出来</li>
+          <li>Top 16：选拔站位或 4×4 排名，可以跨团混排，导出成「单曲选拔发表」图</li>
+          <li>偶像库：9 个团 1187 位成员，资料从公开的维基百科整理，可以搜索和筛选在籍状态</li>
+          <li>记录同步到微信云端，只有自己能看到</li>
+        </ul>
+        <div class="tags"><span>微信小程序</span><span>云开发</span><span>Python 数据整理</span></div>
       </div>
       <div class="sketch" aria-hidden="true">
-        <div class="cap">开发中</div>
-        <div class="phone"><div class="bar"></div><div class="hd">Loveidols</div><div class="grid"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="ft">coming soon</div></div>
+        <div class="cap">Top 16 · 选拔站位</div>
+        <div class="senbatsu">
+          <div class="row r3"><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="row r2"><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="row r1"><i></i><i></i><i class="c">C</i><i></i><i></i><i></i></div>
+        </div>
+        <div class="legend"><span>3 列</span><span>2 列</span><span>1 列 · 中间是 Center</span></div>
       </div>
     </section>
   </div>
