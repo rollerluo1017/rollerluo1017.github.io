@@ -259,9 +259,13 @@ function frame(x){const b=26;
 // 装饰艺术风：海平线上半个太阳，身后一圈放射的光芒，两边折面的山，海是一道道扇贝浪，中间一只帆船
 (function(){const c=__cv[0],x=c.getContext('2d'),R=rng(7);
   const HX=560,HY=700;
-  const N=26;for(let i=0;i<N;i++){const a0=Math.PI+i*Math.PI/N,a1=a0+Math.PI/N,L=1600;
-    veneer(x,poly([[HX,HY],[HX+Math.cos(a0)*L,HY+Math.sin(a0)*L],[HX+Math.cos(a1)*L,HY+Math.sin(a1)*L]]),i%2?'birch':(i%4===0?'maple':'oak'),a0+Math.PI/N/2,100+i,{seam:1.6});}
-  [[250,'cherry'],[205,'padauk'],[150,'#d9772f']].forEach(([r,w],k)=>veneer(x,X=>{X.arc(HX,HY,r,Math.PI,0);X.closePath();},w,k*.7,200+k));
+  // 天：横着的几大片木皮，上浅下暖（Luo：不要放射光芒，像旭日旗）
+  ['birch','birch','maple','maple','oak'].forEach((w,k)=>veneer(x,rect(0,k*142,PW,144),w,0,100+k,{gap:6}));
+  // 太阳：一个整圆，琥珀色两圈，一半藏在山后
+  [[150,'oak'],[112,'#d9963f']].forEach(([r,w],k)=>veneer(x,X=>X.arc(HX,520,r,0,7),w,k*.7,200+k));
+  // 云：几颗圆叠在一起，底边平
+  function cloud(cx,cy,s,seed){veneer(x,X=>{X.moveTo(cx-120*s,cy);X.arc(cx-70*s,cy,50*s,Math.PI,Math.PI*1.5);X.arc(cx,cy-40*s,62*s,Math.PI*1.15,Math.PI*1.9);X.arc(cx+75*s,cy-6*s,46*s,Math.PI*1.3,0);X.lineTo(cx+121*s,cy);X.closePath();},'birch',0,seed);}
+  cloud(250,180,1,150);cloud(860,300,.85,151);cloud(700,120,.55,152);
   function peak(px,py,lx,rx,base,wl,wr,s){const m=px+(rx-lx)*.08;veneer(x,poly([[px,py],[lx,base],[m,base]]),wl,-1.1,s);veneer(x,poly([[px,py],[m,base],[rx,base]]),wr,1.1,s+1);}
   peak(170,430,-120,420,HY,'oak','maple',300);peak(930,470,700,1240,HY,'oak','maple',310);
   peak(330,540,90,600,HY,'walnut','cherry',320);peak(820,520,560,1080,HY,'walnut','cherry',330);
@@ -271,7 +275,7 @@ function frame(x){const b=26;
   for(let r=0;r<rows;r++){const y=HY+r*rh,sc=70+r*8,w=r%2?'tealD':'teal';
     veneer(x,X=>{X.moveTo(0,y+rh+2);for(let u=-(r%2)*sc/2;u<PW+sc;u+=sc){X.arc(u+sc/2,y+rh*.55,sc/2,Math.PI,0);}X.lineTo(PW,PH);X.lineTo(0,PH);X.closePath();},w,0,400+r,{gap:4});
     x.strokeStyle=WOOD.birch;x.globalAlpha=.55;x.lineWidth=2.5;x.beginPath();for(let u=-(r%2)*sc/2;u<PW+sc;u+=sc){x.moveTo(u+4,y+rh*.55);x.arc(u+sc/2,y+rh*.55,sc/2-4,Math.PI,0);}x.stroke();x.globalAlpha=1;}
-  for(let k=0;k<7;k++){const w=150-k*18,yy=HY+18+k*28;veneer(x,rect(HX-w/2,yy,w,9),k%2?'padauk':'#d9772f',0,500+k,{seam:1.4,gap:3});}
+  for(let k=0;k<7;k++){const w=150-k*18,yy=HY+18+k*28;veneer(x,rect(HX-w/2,yy,w,9),k%2?'oak':'#d9963f',0,500+k,{seam:1.4,gap:3});}
   const BX=800,BY=1030;
   veneer(x,poly([[BX,BY-260],[BX,BY-20],[BX-150,BY-20]]),'birch',-.3,600);
   veneer(x,poly([[BX+8,BY-230],[BX+8,BY-30],[BX+110,BY-30]]),'maple',.3,601);
