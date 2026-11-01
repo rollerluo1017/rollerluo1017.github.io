@@ -116,6 +116,22 @@ nav.cats a[aria-current="page"] span { color: var(--mark-ink); }
 .shots img { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--rule); display: block; }
 .shots figcaption { font-family: var(--f-mono); font-size: 11px; color: var(--muted); text-align: center; }
 
+/* Loveidols 数据 */
+.item.stats { gap: 20px; }
+.item.stats h3 { margin-bottom: 0; }
+.tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.tiles div { border-top: 2px solid var(--ink); padding-top: 8px; display: grid; gap: 2px; }
+.tiles b { font-family: var(--f-display); font-weight: 900; font-size: 30px; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.tiles span { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.charts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.bars { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.bars li { display: grid; grid-template-columns: 6.5em minmax(0, 1fr) 3.5em; gap: 8px; align-items: center; font-size: 13px; }
+.bars .bl { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bars .bt { height: 10px; background: var(--paper); border-radius: 3px; overflow: hidden; }
+.bars .bt i { display: block; height: 100%; background: var(--node-main); border-radius: 3px; }
+.bars .bv { font-family: var(--f-mono); font-size: 12px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+@media (max-width: 860px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } .charts { grid-template-columns: minmax(0, 1fr); } }
+
 /* 游戏截图 */
 .game-shot { width: 100%; max-width: 360px; height: auto; display: block; margin: 0 auto; border-radius: 10px; }
 
@@ -217,6 +233,44 @@ footer { border-top: 1px solid var(--rule); padding-block: 24px 48px; color: var
               <figure><img src="img/loveidols-eras.jpg" alt="推的迁移轨迹页面" width="487" height="1052"><figcaption>推的迁移轨迹</figcaption></figure>
               <figure><img src="img/loveidols-top16.jpg" alt="我的 Top 16 页面" width="491" height="1050"><figcaption>Top 16</figcaption></figure>
               <figure><img src="img/loveidols-lib.jpg" alt="偶像库页面" width="483" height="1044"><figcaption>偶像库</figcaption></figure>
+            </div>
+          </article>
+          <article class="item solo stats">
+            <div>
+              <div class="kind">Loveidols 数据 · 2026-10-29 上线，统计到 10-31</div>
+              <h3>上线三天</h3>
+            </div>
+            <div class="tiles">
+              <div><b>206</b><span>累计用户</span></div>
+              <div><b>5,332</b><span>10 月 31 日一天的页面浏览</span></div>
+              <div><b>962</b><span>段被记下的推</span></div>
+              <div><b>182</b><span>人排了自己的 Top 16</span></div>
+            </div>
+            <div class="charts">
+              <div><div class="cap">推过的人最多的团（人）</div><ol class="bars">
+                <li><span class="bl">SNH48</span><span class="bt"><i style="width:100.0%"></i></span><span class="bv">192</span></li>
+                <li><span class="bl">乃木坂46</span><span class="bt"><i style="width:45.3%"></i></span><span class="bv">87</span></li>
+                <li><span class="bl">AKB48</span><span class="bt"><i style="width:45.3%"></i></span><span class="bv">87</span></li>
+                <li><span class="bl">櫻坂46</span><span class="bt"><i style="width:44.8%"></i></span><span class="bv">86</span></li>
+                <li><span class="bl">日向坂46</span><span class="bt"><i style="width:41.7%"></i></span><span class="bv">80</span></li>
+                <li><span class="bl">GNZ48</span><span class="bt"><i style="width:22.4%"></i></span><span class="bv">43</span></li>
+                <li><span class="bl">BEJ48</span><span class="bt"><i style="width:5.2%"></i></span><span class="bv">10</span></li>
+                <li><span class="bl">CKG48</span><span class="bt"><i style="width:5.2%"></i></span><span class="bv">10</span></li>
+              </ol></div>
+              <div><div class="cap">推的方式</div><ol class="bars">
+                <li><span class="bl">単推</span><span class="bt"><i style="width:65.0%"></i></span><span class="bv">65%</span></li>
+                <li><span class="bl">箱推</span><span class="bt"><i style="width:13.0%"></i></span><span class="bv">13%</span></li>
+                <li><span class="bl">CP</span><span class="bt"><i style="width:12.0%"></i></span><span class="bv">12%</span></li>
+                <li><span class="bl">DD</span><span class="bt"><i style="width:10.0%"></i></span><span class="bv">10%</span></li>
+              </ol></div>
+              <div><div class="cap">入坑契机（段）</div><ol class="bars">
+                <li><span class="bl">公演/演唱会</span><span class="bt"><i style="width:100.0%"></i></span><span class="bv">254</span></li>
+                <li><span class="bl">直拍/饭拍</span><span class="bt"><i style="width:51.2%"></i></span><span class="bv">130</span></li>
+                <li><span class="bl">综艺</span><span class="bt"><i style="width:49.6%"></i></span><span class="bv">126</span></li>
+                <li><span class="bl">MV</span><span class="bt"><i style="width:40.9%"></i></span><span class="bv">104</span></li>
+                <li><span class="bl">选拔总选举</span><span class="bt"><i style="width:36.6%"></i></span><span class="bv">93</span></li>
+                <li><span class="bl">短视频</span><span class="bt"><i style="width:31.9%"></i></span><span class="bv">81</span></li>
+              </ol></div>
             </div>
           </article>
         </div>
